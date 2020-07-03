@@ -67,15 +67,22 @@
     <Compile Include="Assets\Body\Data\BodypartData.cs" />
     <Compile Include="Assets\Characters\EntityController.cs" />
     <Compile Include="Assets\Characters\PlayerController.cs" />
-    <Compile Include="Assets\Common\Events\InteractableHighlightedEvent.cs" />
-    <Compile Include="Assets\Common\Events\InteractableUnhighlightedEvent.cs" />
-    <Compile Include="Assets\Common\IInteraction.cs" />
-    <Compile Include="Assets\Common\InteractableObject.cs" />
-    <Compile Include="Assets\Common\Interaction.cs" />
+    <Compile Include="Assets\Common\UnityObjectPool.cs" />
+    <Compile Include="Assets\Interactions\ContextInteractionSubscription.cs" />
+    <Compile Include="Assets\Interactions\Door.cs" />
+    <Compile Include="Assets\Interactions\Events\InteractableHighlightedEvent.cs" />
+    <Compile Include="Assets\Interactions\Events\InteractableUnhighlightedEvent.cs" />
+    <Compile Include="Assets\Interactions\IInteractableCloseable.cs" />
+    <Compile Include="Assets\Interactions\IInteractableOpenable.cs" />
+    <Compile Include="Assets\Interactions\IInteraction.cs" />
+    <Compile Include="Assets\Interactions\InteractableObject.cs" />
+    <Compile Include="Assets\Interactions\Interaction.cs" />
+    <Compile Include="Assets\Interactions\InteractionCall.cs" />
     <Compile Include="Assets\Items\ItemGameObjectUninitializedException.cs" />
     <Compile Include="Assets\Managers\ControlsManager.cs" />
     <Compile Include="Assets\Managers\GameManager.cs" />
     <Compile Include="Assets\Managers\GametimeManager.cs" />
+    <Compile Include="Assets\Managers\ObjectPoolManager.cs" />
     <Compile Include="Assets\Managers\UIManager.cs" />
     <Compile Include="Assets\Movement\Area\CircularArea.cs" />
     <Compile Include="Assets\Movement\Area\TriangularArea.cs" />
@@ -85,11 +92,14 @@
     <Compile Include="Assets\Movement\_abstract\IAreaDefinition.cs" />
     <Compile Include="Assets\Movement\_scripts\EntityMovementController.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
+    <Compile Include="Assets\UI\ContextActionSubscription.cs" />
     <Compile Include="Assets\UI\ContextMenu.cs" />
-    <Compile Include="Assets\UI\ContextMenuOption.cs" />
-    <Compile Include="Assets\UI\Events\ContextMenuOptionSelectedEvent.cs" />
-    <Compile Include="Assets\UI\IContextMenuSubscriber.cs" />
-    <Compile Include="Assets\UI\UIHighlightTextDisplay.cs" />
+    <Compile Include="Assets\UI\ContextMenuAction.cs" />
+    <Compile Include="Assets\UI\ContextMenuActionPool.cs" />
+    <Compile Include="Assets\UI\Events\ContextActionSelectedEvent.cs" />
+    <Compile Include="Assets\UI\UIText.cs" />
+    <Compile Include="Assets\UI\UITextDisplay.cs" />
+    <Compile Include="Assets\UI\UITextPool.cs" />
     <Compile Include="Assets\Utils\Utility.cs" />
     <Compile Include="Assets\Vision\Events\GameObjectSightLostEvent.cs" />
     <Compile Include="Assets\Vision\Events\GameObjectSpottedEvent.cs" />
@@ -345,6 +355,15 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="OHLogic">
+      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="OHLogic.Common">
+      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OHLogic.Combat">
+      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.Combat.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

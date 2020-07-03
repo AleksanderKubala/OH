@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UIHighlightTextDisplay : MonoBehaviour
+public class UIText : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text textRender;
@@ -23,16 +23,6 @@ public class UIHighlightTextDisplay : MonoBehaviour
     }
 
     private void Awake()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void OnInteractableHighlighted()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void OnInteractableUnhighlighted()
     {
         gameObject.SetActive(false);
     }

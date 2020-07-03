@@ -31,10 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OHLogic.Combat">
+    <Reference Include="OHLogic.Combat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OHLogic.Combat\bin\Debug\OHLogic.Combat.dll</HintPath>
     </Reference>
-    <Reference Include="OHLogic.Common">
+    <Reference Include="OHLogic.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OHLogic.Common\bin\Debug\OHLogic.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />

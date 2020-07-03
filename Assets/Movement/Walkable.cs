@@ -1,20 +1,21 @@
 ﻿using Assets.Managers;
-using Assets.OH;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Movement
 {
-    public class Walkable : MonoBehaviour
+    public class Walkable : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     {
-        private void OnMouseUpAsButton()
+        public void OnPointerDown(PointerEventData eventData)
         {
-            if(Input.GetMouseButtonUp(0))
+
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                var mousePointRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if(Physics.Raycast(mousePointRay, out var hit, 150.0f, CommonValue.LayerMasks.Walkable, QueryTriggerInteraction.Ignore))
-                {
-                    GameManager.Player.SetDestinationFlag(hit.point);
-                }
+                GameManager.Player.Walk(eventData.pointerCurrentRaycast.worldPosition);
             }
         }
     }

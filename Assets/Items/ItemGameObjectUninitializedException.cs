@@ -1,4 +1,5 @@
 ﻿using Assets.Common;
+using Assets.Interactions;
 using Boo.Lang.Runtime;
 
 namespace Assets.Items

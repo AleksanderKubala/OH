@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Events;
 
-namespace Assets.Common.Events
+namespace Assets.Interactions.Events
 {
     public class InteractableUnhighlightedEvent : UnityEvent
     {

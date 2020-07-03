@@ -8,6 +8,8 @@ using Assets.Common;
 using Assets.Movement;
 using System;
 using OHLogic.Items;
+using Assets.Interactions;
+using System.Linq;
 
 namespace Asset.OnlyHuman.Characters
 {
@@ -15,9 +17,10 @@ namespace Asset.OnlyHuman.Characters
     {
         [SerializeField]
         protected EntityMovementController _movementController;
-
         [SerializeField]
         protected DestinationFlag _destinationFlag;
+
+        protected IInteraction PerformedInteraction;
         protected LinkedList<IInteraction> _interactionQueue;
 
 
@@ -40,7 +43,12 @@ namespace Asset.OnlyHuman.Characters
 
         private void Update()
         {
-            
+            if(PerformedInteraction == null && _interactionQueue.Any())
+            {
+                PerformedInteraction = _interactionQueue.First.Value;
+                _interactionQueue.Remove(PerformedInteraction);
+                SetDestinationFlag(PerformedInteraction.InteractionSource);
+            }
         }
 
         public void AddInteractionToPerform(IInteraction interactionToPerform)
@@ -107,6 +115,12 @@ namespace Asset.OnlyHuman.Characters
         public bool Drop(IItem item)
         {
             throw new NotImplementedException();
+        }
+
+        public void Walk(Vector3 pointWorldPosition)
+        {
+            PerformedInteraction = null;
+            SetDestinationFlag(pointWorldPosition);
         }
     }
 }

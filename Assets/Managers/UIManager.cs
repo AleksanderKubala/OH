@@ -10,9 +10,9 @@ namespace Assets.Managers
         public static UIManager Instance { get; private set; }
 
         [SerializeField]
-        private GameObject _canvas;
+        private GameObject _screenSpaceCanvas;
         [SerializeField]
-        private UIHighlightTextDisplay _nameDisplay;
+        private GameObject _worldSpaceCanvas;
         [SerializeField]
         private ContextMenu _contextMenu;
 
@@ -21,30 +21,10 @@ namespace Assets.Managers
             Instance = this;
         }
 
-        public void AssociateUINameDisplayWithInteractable(InteractableObject interactable)
-        {
-            interactable.InteractableHighlighted.AddListener(_nameDisplay.OnInteractableHighlighted);
-            interactable.InteractableUnhighlighted.AddListener(_nameDisplay.OnInteractableUnhighlighted);
-            _nameDisplay.transform.forward = Camera.main.transform.forward;
-            _nameDisplay.transform.position = interactable.transform.position - Camera.main.transform.forward + Vector3.up;
-            _nameDisplay.Text = interactable.HighlightText;
-        }
 
-        public void ExpandInteractionContextMenu(IEnumerable<IContextMenuSubscriber> contextMenuSubscribers)
+        public ContextMenu GetContextMenu()
         {
-            foreach(var subscriber in contextMenuSubscribers)
-            {
-                var contextOption = _contextMenu.GetUnassignedContextOption();
-                contextOption.OptionTitle = subscriber.OptionTitle;
-                contextOption.ContextOptionSelected.AddListener(subscriber.OnSelectedCallback);
-            }
-
-            _contextMenu.Display(Input.mousePosition);
-        }
-
-        public void CollapseContextMenu()
-        {
-            _contextMenu.Hide();
+            return _contextMenu;
         }
     }
 }

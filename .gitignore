@@ -421,3 +421,4 @@ crashlytics-build.properties
 /Assets/SerializableDictionary
 /Assets/~Unity_Animations
 /Assets/~Unity_DataInstances
+*.asset
