@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8B552AD3-0C5E-45A7-B616-4B7949522A76}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OHLogic</RootNamespace>
+    <AssemblyName>OHLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OHLogic.Combat">
+      <HintPath>..\OHLogic.Combat\bin\Debug\OHLogic.Combat.dll</HintPath>
+    </Reference>
+    <Reference Include="OHLogic.Common">
+      <HintPath>..\OHLogic.Common\bin\Debug\OHLogic.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Body\IDamageable.cs" />
+    <Compile Include="GameEntity\GameEntity.cs" />
+    <Compile Include="Vision\VisionField.cs" />
+    <None Include="_from_unity_awaiting_revision\Utility.cs" />
+    <None Include="_from_unity_awaiting_revision\Actions\ActionType.cs" />
+    <Compile Include="DataObjects\IObjectWithItemData.cs" />
+    <Compile Include="Data\IActionData.cs" />
+    <Compile Include="Body\BodypartType.cs" />
+    <Compile Include="Body\BodypartTypeNone.cs" />
+    <Compile Include="Body\BodypartTypes.cs" />
+    <Compile Include="DataObjects\IObjectWithActionData.cs" />
+    <Compile Include="DataObjects\IObjectWithBodypartData.cs" />
+    <Compile Include="DataObjects\IObjectWithMaterialData.cs" />
+    <Compile Include="DataObjects\IObjectWithVisionData.cs" />
+    <Compile Include="Data\IBodypartData.cs" />
+    <Compile Include="Data\IEquipableObjectData.cs" />
+    <Compile Include="Data\IItemData.cs" />
+    <Compile Include="Data\IMaterialData.cs" />
+    <Compile Include="Data\IPickupableObjectData.cs" />
+    <Compile Include="Data\IVisionData.cs" />
+    <Compile Include="Equipment\Equipment.cs" />
+    <Compile Include="Equipment\IEquipment.cs" />
+    <Compile Include="GameEntity\GameEntityAttribute.cs" />
+    <Compile Include="GameEntity\GameEntityAttributeType.cs" />
+    <Compile Include="GameEntity\GameEntityGenericAttributeType.cs" />
+    <Compile Include="GameEntity\AttributeTypes.cs" />
+    <Compile Include="GameEntity\GameEntityStatistics.cs" />
+    <None Include="_from_unity_awaiting_revision\Controller\EntityController.cs" />
+    <Compile Include="GameEntity\GameEntityGenericAttribute.cs" />
+    <Compile Include="GameEntity\IGameEntityAttribute.cs" />
+    <Compile Include="GameEntity\IGameEntityStatistics.cs" />
+    <Compile Include="GameEntity\IGameEntityGenericAttribute.cs" />
+    <None Include="_from_unity_awaiting_revision\Controller\PlayerController.cs" />
+    <None Include="_from_unity_awaiting_revision\Actions\IAction.cs" />
+    <None Include="_from_unity_awaiting_revision\Actions\IActionProvider.cs" />
+    <None Include="_from_unity_awaiting_revision\Actions\IActionWithData.cs" />
+    <Compile Include="Body\GameEntityBody.cs" />
+    <Compile Include="Body\Bodypart.cs" />
+    <Compile Include="Body\IBodypart.cs" />
+    <Compile Include="Body\IGameEntityBody.cs" />
+    <None Include="_from_unity_awaiting_revision\HumanoidHand.cs" />
+    <None Include="_from_unity_awaiting_revision\Factions\Relation.cs" />
+    <None Include="_from_unity_awaiting_revision\Factions\RelationAttitude.cs" />
+    <None Include="_from_unity_awaiting_revision\Factions\_abstract\IFaction.cs" />
+    <None Include="_from_unity_awaiting_revision\Factions\_scripts\CharacterFaction.cs" />
+    <Compile Include="GameEntity\IGameEntity.cs" />
+    <Compile Include="GameEntity\IGameEntityOwned.cs" />
+    <Compile Include="GameEntity\IGameEntityOwnershipTransferable.cs" />
+    <Compile Include="GameEntity\TransferableOwnershipObject.cs" />
+    <Compile Include="Inventory\Events\InventoryStateChangedEventArgs.cs" />
+    <Compile Include="Inventory\IInventory.cs" />
+    <Compile Include="Inventory\IInventorySpace.cs" />
+    <Compile Include="Inventory\IInventorySpaceProvider.cs" />
+    <Compile Include="Inventory\InventorySpace.cs" />
+    <Compile Include="Inventory\Inventory.cs" />
+    <Compile Include="Items\Events\ItemAssignedToItemSlotEventArgs.cs" />
+    <Compile Include="Items\Events\ItemDroppedEventArgs.cs" />
+    <Compile Include="Items\Events\ItemEquippedEventArgs.cs" />
+    <Compile Include="Items\Events\ItemPickedUpEventArgs.cs" />
+    <Compile Include="Items\Events\ItemUnequippedEventArgs.cs" />
+    <Compile Include="Items\IItem.cs" />
+    <Compile Include="Inventory\IPickupable.cs" />
+    <Compile Include="Items\Item.cs" />
+    <Compile Include="Items\ItemDecorator.cs" />
+    <Compile Include="Equipment\EquipmentSlot.cs" />
+    <Compile Include="Items\ItemType.cs" />
+    <Compile Include="Items\ItemTypes.cs" />
+    <Compile Include="Equipment\IEquipmentSlotProvider.cs" />
+    <Compile Include="Equipment\IEquipmentSlot.cs" />
+    <Compile Include="Equipment\IEquipable.cs" />
+    <None Include="_from_unity_awaiting_revision\Proficiencies\Proficiency.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Vision\Events\GameObjectSightLost.cs" />
+    <None Include="Vision\Events\GameObjectSpotted.cs" />
+    <None Include="Vision\_scripts\FieldOfVisionRenderer.cs" />
+    <None Include="Vision\_scripts\Sight.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "D:\UnityProjects\OH\OH\OHLogic\bin\Debug\OHLogic.dll" "D:\UnityProjects\OH\OH\Assets"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
