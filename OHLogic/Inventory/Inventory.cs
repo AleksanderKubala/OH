@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using OHLogic.GameEntity;
-using OHLogic.Items;
 
 namespace OHLogic.Inventory
 {
-    public abstract class Inventory : IInventory
+    public class Inventory : IInventory
     {
-        private readonly Dictionary<IInventorySpaceProvider, InventorySpace> _inventorySpaces;
+        private readonly Dictionary<IInventorySpaceProvider, IInventorySpace> _inventorySpaces;
 
         public Inventory(IGameEntity owningGameEntity)
         {
             OwningGameEntity = owningGameEntity ?? throw new ArgumentNullException(nameof(owningGameEntity));
-            _inventorySpaces = new Dictionary<IInventorySpaceProvider, InventorySpace>();
+            _inventorySpaces = new Dictionary<IInventorySpaceProvider, IInventorySpace>();
         }
 
         public IGameEntity OwningGameEntity { get; }
@@ -28,21 +27,21 @@ namespace OHLogic.Inventory
             _inventorySpaces.Remove(inventorySpaceProvider);
         }
 
-        public IEnumerable<InventorySpace> GetInventorySpaces()
+        public IEnumerable<IInventorySpace> GetInventorySpaces()
         {
             var allInventorySpaces = _inventorySpaces.Values.Select(x => x);
 
             return allInventorySpaces;
         }
 
-        public IEnumerable<InventorySpace> GetInventorySpaces(Func<InventorySpace, bool> predicate)
+        public IEnumerable<IInventorySpace> GetInventorySpaces(Func<IInventorySpace, bool> predicate)
         {
             var selectedInventorySpaces = _inventorySpaces.Values.Where(predicate);
 
             return selectedInventorySpaces;
         }
 
-        public bool GetInventorySpaceByProvider(IInventorySpaceProvider inventorySpaceProvider, out InventorySpace inventorySpace)
+        public bool GetInventorySpaceByProvider(IInventorySpaceProvider inventorySpaceProvider, out IInventorySpace inventorySpace)
         {
             var retrievedInventorySpace = _inventorySpaces.TryGetValue(inventorySpaceProvider, out inventorySpace);
 

@@ -72,12 +72,13 @@
     <Compile Include="Assets\Interactions\Door.cs" />
     <Compile Include="Assets\Interactions\Events\InteractableHighlightedEvent.cs" />
     <Compile Include="Assets\Interactions\Events\InteractableUnhighlightedEvent.cs" />
+    <Compile Include="Assets\Interactions\Events\InteractionPerformedEvent.cs" />
     <Compile Include="Assets\Interactions\IInteractableCloseable.cs" />
     <Compile Include="Assets\Interactions\IInteractableOpenable.cs" />
     <Compile Include="Assets\Interactions\IInteraction.cs" />
     <Compile Include="Assets\Interactions\InteractableObject.cs" />
     <Compile Include="Assets\Interactions\Interaction.cs" />
-    <Compile Include="Assets\Interactions\InteractionCall.cs" />
+    <Compile Include="Assets\Interactions\InteractionPerformedCallback.cs" />
     <Compile Include="Assets\Items\ItemGameObjectUninitializedException.cs" />
     <Compile Include="Assets\Managers\ControlsManager.cs" />
     <Compile Include="Assets\Managers\GameManager.cs" />
@@ -92,11 +93,16 @@
     <Compile Include="Assets\Movement\_abstract\IAreaDefinition.cs" />
     <Compile Include="Assets\Movement\_scripts\EntityMovementController.cs" />
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
+    <Compile Include="Assets\UI\ContextActionPool.cs" />
     <Compile Include="Assets\UI\ContextActionSubscription.cs" />
-    <Compile Include="Assets\UI\ContextMenu.cs" />
-    <Compile Include="Assets\UI\ContextMenuAction.cs" />
-    <Compile Include="Assets\UI\ContextMenuActionPool.cs" />
+    <Compile Include="Assets\UI\ContextMenuHandler.cs" />
+    <Compile Include="Assets\UI\ContextMenuSubscriber.cs" />
     <Compile Include="Assets\UI\Events\ContextActionSelectedEvent.cs" />
+    <Compile Include="Assets\UI\Events\ContextMenuCalledEvent.cs" />
+    <Compile Include="Assets\UI\Events\ContextMenuCollapsedEvent.cs" />
+    <Compile Include="Assets\UI\Events\ContextMenuDisplayedEvent.cs" />
+    <Compile Include="Assets\UI\UIContextAction.cs" />
+    <Compile Include="Assets\UI\UIContextMenuController.cs" />
     <Compile Include="Assets\UI\UIText.cs" />
     <Compile Include="Assets\UI\UITextDisplay.cs" />
     <Compile Include="Assets\UI\UITextPool.cs" />
@@ -356,14 +362,14 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
-    <Reference Include="OHLogic">
-      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.dll</HintPath>
+    <Reference Include="OHLogic.Combat">
+      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.Combat.dll</HintPath>
     </Reference>
     <Reference Include="OHLogic.Common">
       <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.Common.dll</HintPath>
     </Reference>
-    <Reference Include="OHLogic.Combat">
-      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.Combat.dll</HintPath>
+    <Reference Include="OHLogic">
+      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

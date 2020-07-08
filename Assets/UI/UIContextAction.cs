@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Assets.UI
 {
-    public class ContextMenuAction : MonoBehaviour
+    public class UIContextAction : MonoBehaviour
     {
         [SerializeField]
         private Button _button;

@@ -55,13 +55,16 @@ namespace OHLogic.Equipment
 
         public bool UnassignCurrentItem()
         {
-            var successfullyUnequipped = false;
+            var successfullyUnequipped = true;
 
-            if(IsOccupied() && EquippedItem.CanBeUnequipped())
+            if(IsOccupied() && !EquippedItem.CanBeUnequipped())
+            {
+                successfullyUnequipped = false;
+            }
+            else
             {
                 var previouslyEquipped = AssignNewItemToSlot(null);
                 EquippedItem.WhenUnequipped();
-                successfullyUnequipped = true;
                 //TODO: set proper event arguments
                 ItemUnassgignedFromSlot?.Invoke(this, null);
             }

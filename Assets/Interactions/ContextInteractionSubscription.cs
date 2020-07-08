@@ -1,14 +1,13 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Assets.UI;
 using Assets.Managers;
-using Assets.UI;
 
 namespace Assets.Interactions
 {
     public class ContextInteractionSubscription : ContextActionSubscription
     {
-        private readonly InteractionCall _interactionCall;
+        private readonly InteractionPerformedCallback _interactionCall;
 
-        public ContextInteractionSubscription(InteractionCall interactionSelected, string actionTitle)
+        public ContextInteractionSubscription(InteractionPerformedCallback interactionSelected, string actionTitle)
         {
             _interactionCall = interactionSelected;
             ActionTitle = actionTitle;

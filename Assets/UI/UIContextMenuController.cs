@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
 using Assets.UI;
-using Boo.Lang.Runtime;
+using Assets.UI.Events;
 using UnityEngine;
 
-public class ContextMenu : MonoBehaviour
+public class UIContextMenuController : MonoBehaviour
 {
     [SerializeField]
-    private ContextMenuAction _cancel;
+    private UIContextAction _cancel;
     [SerializeField]
     private RectTransform _rectTransform;
+    private LinkedList<UIContextAction> _menuActions;
 
-    private LinkedList<ContextMenuAction> _menuActions;
+    public ContextMenuDisplayedEvent ContextMenuDisplayed;
+    public ContextMenuCollapsedEvent ContextMenuCollapsed;
 
     private void Awake()
     {
-        _menuActions = new LinkedList<ContextMenuAction>();
+        _menuActions = new LinkedList<UIContextAction>();
     }
 
     private void Start()
@@ -25,7 +27,7 @@ public class ContextMenu : MonoBehaviour
 
     public void AddContextAction(ContextActionSubscription contextActionSubscription)
     {
-        var contextAction = ContextMenuActionPool.Instance.GetObjectFromPool();
+        var contextAction = ContextActionPool.Instance.GetObjectFromPool();
         contextAction.Subscription = contextActionSubscription;
         contextAction.gameObject.SetActive(true);
         _menuActions.AddLast(contextAction);
@@ -38,16 +40,18 @@ public class ContextMenu : MonoBehaviour
 
         gameObject.transform.position = screenPointLeftTop;
         gameObject.SetActive(true);
+        ContextMenuDisplayed?.Invoke();
     }
 
     public void Hide()
     {
         foreach(var contextAction in _menuActions)
         {
-            ContextMenuActionPool.Instance.ReturnObject(contextAction);
+            ContextActionPool.Instance.ReturnObject(contextAction);
         }
 
         _menuActions.Clear();
         gameObject.SetActive(false);
+        ContextMenuCollapsed?.Invoke();
     }
 }

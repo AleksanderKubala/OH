@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Asset.OnlyHuman.Characters;
-using Assets.Managers;
 using Assets.UI;
 using UnityEngine;
 
@@ -43,21 +38,23 @@ namespace Assets.Interactions
             IsOpen = _isOpen;
         }
 
+        protected override void Start()
+        {
+            _contextMenuHandler.Subscribe(new ContextInteractionSubscription(Open, "Open"));
+            _contextMenuHandler.Subscribe(new ContextInteractionSubscription(Close, "Close"));
+        }
+
         public void Close(EntityController interactingEntity)
         {
-            var interaction = new Interaction(gameObject);
-            interaction.InteractionPerformed = OnInteractedClose;
-            GameManager.Player.AddInteractionToPerform(interaction);
+            AssignInteraction(interactingEntity, OnInteractedClose);
         }
 
         public void Open(EntityController interactingEntity)
         {
-            var interaction = new Interaction(gameObject);
-            interaction.InteractionPerformed = OnInteractedOpen;
-            GameManager.Player.AddInteractionToPerform(interaction);
+            AssignInteraction(interactingEntity, OnInteractedOpen);
         }
 
-        private void OnInteractedOpen()
+        private void OnInteractedOpen(EntityController interactinEntity)
         {
             if(!IsOpen)
             {
@@ -66,29 +63,13 @@ namespace Assets.Interactions
             }
         }
 
-        private void OnInteractedClose()
+        private void OnInteractedClose(EntityController interactinEntity)
         {
             if(IsOpen)
             {
-                _hinge.transform.rotation *= Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                _hinge.transform.rotation *= Quaternion.Euler(0.0f, -90.0f, 0.0f);
                 IsOpen = false;
             }
-        }
-
-        protected override IEnumerable<ContextActionSubscription> EnumerateInteractions()
-        {
-            var interactions = new LinkedList<ContextActionSubscription>();
-            
-            if(IsOpen)
-            {
-                interactions.AddLast(new ContextInteractionSubscription(Close, "Close"));
-            }
-            else
-            {
-                interactions.AddLast(new ContextInteractionSubscription(Open, "Open"));
-            }
-
-            return interactions;
         }
     }
 }

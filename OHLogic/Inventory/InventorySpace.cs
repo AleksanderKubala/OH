@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OHLogic.Items;
 
 namespace OHLogic.Inventory
@@ -18,30 +19,37 @@ namespace OHLogic.Inventory
         
         public float Capacity {  get; protected set; }
 
-
-        public bool ContainsItem(IItem item)
+        public IEnumerable<IItem> GetStoredItems()
         {
-            throw new System.NotImplementedException();
+            var allItems = _storedItems.Select(x => x);
+
+            return allItems;
         }
 
-        public IEnumerable<IItem> GetStoredItems(Func<bool, IItem> predicate)
+        public IEnumerable<IItem> GetStoredItems(Func<IItem, bool> predicate)
         {
-            throw new NotImplementedException();
+            var  selectedItems = _storedItems.Where(predicate);
+
+            return selectedItems;
         }
 
         public bool HasEnoughSpace(IItem item)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public bool PutItemInside(IItem item)
         {
-            throw new System.NotImplementedException();
+            var addedSuccessfully = _storedItems.Add(item);
+
+            return addedSuccessfully;
         }
 
         public bool TakeItemOut(IItem item)
         {
-            throw new System.NotImplementedException();
+            var removedSuccessfully = _storedItems.Remove(item);
+
+            return removedSuccessfully;
         }
     }
 }

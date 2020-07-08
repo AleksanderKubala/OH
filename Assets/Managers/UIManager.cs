@@ -14,7 +14,7 @@ namespace Assets.Managers
         [SerializeField]
         private GameObject _worldSpaceCanvas;
         [SerializeField]
-        private ContextMenu _contextMenu;
+        private UIContextMenuController _contextMenu;
 
         private void Awake()
         {
@@ -22,7 +22,7 @@ namespace Assets.Managers
         }
 
 
-        public ContextMenu GetContextMenu()
+        public UIContextMenuController GetContextMenu()
         {
             return _contextMenu;
         }

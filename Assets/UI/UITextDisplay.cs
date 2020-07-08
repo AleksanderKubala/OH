@@ -20,8 +20,11 @@ namespace Assets.UI
 
         public void ReleaseTextElement()
         {
-            UITextPool.Instance.ReturnObject(_uiText);
-            _uiText = null;
+            if(_uiText != null)
+            {
+                UITextPool.Instance.ReturnObject(_uiText);
+                _uiText = null;
+            }
         }
 
         public void Show()

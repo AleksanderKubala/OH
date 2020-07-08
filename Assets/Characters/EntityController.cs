@@ -4,7 +4,6 @@ using OHLogic.GameEntity;
 using OHLogic.Body;
 using OHLogic.Inventory;
 using System.Collections.Generic;
-using Assets.Common;
 using Assets.Movement;
 using System;
 using OHLogic.Items;
@@ -13,28 +12,46 @@ using System.Linq;
 
 namespace Asset.OnlyHuman.Characters
 {
-    public class EntityController : MonoBehaviour, IGameEntity
+    public class EntityController : MonoBehaviour, IGameEntity, IInventorySpaceProvider
     {
         [SerializeField]
         protected EntityMovementController _movementController;
         [SerializeField]
         protected DestinationFlag _destinationFlag;
-
-        protected IInteraction PerformedInteraction;
+        [SerializeField]
+        protected SphereCollider _interactionTrigger;
+        protected IInteraction _performedInteraction;
         protected LinkedList<IInteraction> _interactionQueue;
 
-
-        public IGameEntityStatistics Statistics => throw new NotImplementedException();
-
-        public IGameEntityBody Body => throw new NotImplementedException();
-
-        public IInventory Inventory => throw new NotImplementedException();
-
-        public DestinationFlag DestinationFlag => _destinationFlag;
+        public IGameEntityStatistics Statistics {get; private set; }
+        public IGameEntityBody Body { get; private set; }
+        public IInventory Inventory { get; private set; }
+        public IInteraction PerformedInteraction
+        {
+            get
+            {
+                return _performedInteraction;
+            }
+            protected set
+            {
+                if(value != null)
+                {
+                    _interactionTrigger.enabled = true;
+                }
+                else
+                {
+                    _interactionTrigger.enabled = false;
+                }
+                _performedInteraction = value;
+            }
+        }
 
         private void Awake()
         {
             _interactionQueue = new LinkedList<IInteraction>();
+            var inventory = new Inventory(this);
+            inventory.Expand(this);
+            Inventory = inventory;
         }
 
         private void Start()
@@ -48,6 +65,15 @@ namespace Asset.OnlyHuman.Characters
                 PerformedInteraction = _interactionQueue.First.Value;
                 _interactionQueue.Remove(PerformedInteraction);
                 SetDestinationFlag(PerformedInteraction.InteractionSource);
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(ReferenceEquals(other.transform, PerformedInteraction?.InteractionSource))
+            {
+                PerformedInteraction.Perform(this);
+                PerformedInteraction = null;
             }
         }
 
@@ -92,11 +118,6 @@ namespace Asset.OnlyHuman.Characters
             SetDestinationFlag(null, transform.position, EntityMovementController.StandardDistance);
         }
 
-        public IGameEntityGenericAttribute<T> GetAttribute<T>(GameEntityGenericAttributeType<T> attributeType) where T : struct, IComparable<T>, IEquatable<T>
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Equip(IItem item)
         {
             throw new NotImplementedException();
@@ -121,6 +142,11 @@ namespace Asset.OnlyHuman.Characters
         {
             PerformedInteraction = null;
             SetDestinationFlag(pointWorldPosition);
+        }
+
+        public IInventorySpace GetInventorySpace()
+        {
+            return new InventorySpace(float.MaxValue);
         }
     }
 }

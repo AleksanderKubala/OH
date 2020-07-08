@@ -7,7 +7,7 @@ namespace OHLogic.Inventory
 {
     public interface IInventory : IGameEntityOwned
     {
-        IEnumerable<InventorySpace> GetInventorySpaces(Func<InventorySpace, bool> predicate);
-        bool GetInventorySpaceByProvider(IInventorySpaceProvider inventorySpaceProvider, out InventorySpace inventorySpace);
+        IEnumerable<IInventorySpace> GetInventorySpaces(Func<IInventorySpace, bool> predicate);
+        bool GetInventorySpaceByProvider(IInventorySpaceProvider inventorySpaceProvider, out IInventorySpace inventorySpace);
     }
 }

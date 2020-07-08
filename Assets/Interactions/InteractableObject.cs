@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Asset.OnlyHuman.Characters;
 using Assets.Interactions.Events;
 using Assets.Managers;
 using Assets.UI;
@@ -7,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Interactions
 {
-    public abstract class InteractableObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+    public abstract class InteractableObject : ContextMenuSubscriber, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField]
         private Outline _outline;
@@ -18,7 +19,7 @@ namespace Assets.Interactions
         public InteractableHighlightedEvent InteractableHighlighted;
         public InteractableUnhighlightedEvent InteractableUnhighlighted;
 
-        protected InteractionCall DefaultInteraction;
+        protected InteractionPerformedCallback DefaultInteraction;
 
         protected virtual void Awake()
         {
@@ -26,24 +27,21 @@ namespace Assets.Interactions
             InteractableUnhighlighted = new InteractableUnhighlightedEvent();
         }
 
-        protected void Start()
+        protected virtual void Start()
         {
             InteractableHighlighted.AddListener(_nameDisplay.Show);
             InteractableUnhighlighted.AddListener(_nameDisplay.Hide);
-            _outline.enabled = false;            
+            _outline.enabled = false;
         }
 
         protected void OnBecameVisible()
         {
             _nameDisplay.AcquireTextElement();
-            //UIManager.Instance.AssociateUINameDisplayWithInteractable(this);
         }
 
         protected void OnBecameInvisible()
         {
             _nameDisplay.ReleaseTextElement();
-            //InteractableHighlighted.RemoveAllListeners();
-            //InteractableUnhighlighted.RemoveAllListeners();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -69,25 +67,12 @@ namespace Assets.Interactions
             {
                 DefaultInteraction?.Invoke(GameManager.Player);
             }
-            if (Input.GetKeyUp(KeyCode.Mouse1))
-            {
-                ExpandContextMenu();
-            }
         }
 
-        public void ExpandContextMenu()
+        protected void AssignInteraction(EntityController interactingEntity, InteractionPerformedCallback interactionPerformCallback)
         {
-            var contextMenu = UIManager.Instance.GetContextMenu();
-            var interactions = EnumerateInteractions();
-            
-            foreach(var interaction in interactions)
-            {
-                contextMenu.AddContextAction(interaction);
-            }
-
-            contextMenu.Display(Input.mousePosition);
+            var interaction = new Interaction(gameObject, interactionPerformCallback);
+            interactingEntity.AddInteractionToPerform(interaction);
         }
-
-        protected abstract IEnumerable<ContextActionSubscription> EnumerateInteractions();
     }
 }

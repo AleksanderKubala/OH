@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Walkable
   - Character
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Hitbox
   - Attack
   - Combat
-  - 
+  - Interactable
   - 
   - 
   - 
