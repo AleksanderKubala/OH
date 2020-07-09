@@ -2,6 +2,6 @@
 {
     public interface IInventorySpaceProvider
     {
-        InventorySpace GetInventorySpace(); 
+        IInventorySpace GetInventorySpace(); 
     }
 }

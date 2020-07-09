@@ -1,24 +1,58 @@
-﻿using UnityEngine;
+﻿using System;
 using Asset.OnlyHuman.Characters;
-using UnityEngine.Events;
+using Assets.Managers;
 using Assets.UI;
+using Boo.Lang;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Interactions
 {
-    public  class Interaction : IInteraction
+    [RequireComponent(typeof(ContextMenuHandler))]
+    [Serializable]
+    public abstract class Interaction : ContextMenuSubscriber, IInteraction, IContextActionSubscriber
     {
-        public Interaction(GameObject interactionSource)
+        [SerializeField]
+        public Interaction[] exclusiveWith;
+        [SerializeField]
+        private string _interactionName;
+        [SerializeField]
+        private int _contextMenuPriority;
+
+        public Transform InteractionSource => transform;
+        public int ContextMenuPriority => _contextMenuPriority;
+        public string ContextActionTitle => _interactionName;
+        public bool ShowInContextMenu { get; private set; }
+        public bool IsEffective
         {
-            InteractionSource = interactionSource.transform;
+            get
+            {   //possible problems if asynchronous access shows up
+                return ShowInContextMenu;
+            }
+            set
+            {
+                ShowInContextMenu = value;
+                foreach (var exclusive in exclusiveWith)
+                {
+                    exclusive.ShowInContextMenu = !value;
+                }
+            }
         }
 
-        public UnityAction InteractionPerformed;
-
-        public Transform InteractionSource {get; private set; }
-
-        public void Perform(EntityController interactingEntity)
+        protected virtual void Start()
         {
-            InteractionPerformed?.Invoke();
+           _contextMenuHandler.Subscribe(this);
+        }
+
+        void IContextActionSubscriber.OnSelectedByContextMenu()
+        {
+            GameManager.Player.AddInteractionToPerform(this);
+        }
+
+        public virtual bool Perform(EntityController interactingEntity)
+        {
+            //TODO: implement distance check
+            return true;
         }
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Assets.UI
 {
     [CreateAssetMenu(fileName = "ContextActionPool", menuName = "Object Pools/Context Action Pool")]
-    public class ContextMenuActionPool : UnityObjectPool<ContextMenuAction>
+    public class ContextActionPool : UnityObjectPool<UIContextAction>
     {
-        public static ContextMenuActionPool Instance { get; private set; }
+        public static ContextActionPool Instance { get; private set; }
 
         public override void Init()
         {
@@ -16,7 +16,7 @@ namespace Assets.UI
             Instance = this;
         }
 
-        protected override void Reset(ContextMenuAction usedObject)
+        protected override void Reset(UIContextAction usedObject)
         {
             usedObject.Subscription = null;
             usedObject.gameObject.SetActive(false);

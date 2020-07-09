@@ -10,7 +10,6 @@ namespace OHLogic.GameEntity
         IGameEntityStatistics Statistics { get; }
         IGameEntityBody Body { get; }
         IInventory Inventory { get; }
-        IGameEntityGenericAttribute<T> GetAttribute<T>(GameEntityGenericAttributeType<T> attributeType) where T : struct, IComparable<T>, IEquatable<T>;
         bool Equip(IItem item);
         bool Unequip(IItem item);
         bool PutToInventory(IItem item);

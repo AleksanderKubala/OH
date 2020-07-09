@@ -15,7 +15,7 @@ namespace Assets.Managers
         [SerializeField]
         private Transform _uiTextInstancesParent;
         [SerializeField]
-        private ContextMenuActionPool _contextActionPool;
+        private ContextActionPool _contextActionPool;
         [SerializeField]
         private Transform _contextActionInstancesParent;
 
