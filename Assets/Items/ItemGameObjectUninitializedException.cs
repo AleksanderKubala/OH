@@ -6,6 +6,6 @@ namespace Assets.Items
 {
     public class ItemGameObjectUninitializedException : RuntimeException
     {
-        public ItemGameObjectUninitializedException(InteractableObject itemGameObject) : base($"Tried to retrieve item from existing and uninitialized ItemGameObject, name {itemGameObject.name}") { }
+        public ItemGameObjectUninitializedException(InteractiveObjectHighlight itemGameObject) : base($"Tried to retrieve item from existing and uninitialized ItemGameObject, name {itemGameObject.name}") { }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Assets.UI
 {
-    [RequireComponent(typeof(ContextMenuHandler))]
     public class ContextMenuSubscriber : MonoBehaviour
     {
         [SerializeField]

@@ -77,14 +77,10 @@ namespace Asset.OnlyHuman.Characters
             }
         }
 
-        public void AddInteractionToPerform(IInteraction interactionToPerform)
+        public void Walk(Vector3 pointWorldPosition)
         {
-            _interactionQueue.AddLast(interactionToPerform);
-        }
-
-        public void CancelInteraction(IInteraction interaction)
-        {
-            _interactionQueue.Remove(interaction);
+            PerformedInteraction = null;
+            SetDestinationFlag(pointWorldPosition);
         }
 
         public void SetDestinationFlag(Vector3 worldSpaceDestination)
@@ -118,6 +114,16 @@ namespace Asset.OnlyHuman.Characters
             SetDestinationFlag(null, transform.position, EntityMovementController.StandardDistance);
         }
 
+        public void AddInteractionToPerform(IInteraction interactionToPerform)
+        {
+            _interactionQueue.AddLast(interactionToPerform);
+        }
+
+        public void CancelInteraction(IInteraction interaction)
+        {
+            _interactionQueue.Remove(interaction);
+        }
+
         public bool Equip(IItem item)
         {
             throw new NotImplementedException();
@@ -136,12 +142,6 @@ namespace Asset.OnlyHuman.Characters
         public bool Drop(IItem item)
         {
             throw new NotImplementedException();
-        }
-
-        public void Walk(Vector3 pointWorldPosition)
-        {
-            PerformedInteraction = null;
-            SetDestinationFlag(pointWorldPosition);
         }
 
         public IInventorySpace GetInventorySpace()

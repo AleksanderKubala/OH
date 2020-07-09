@@ -1,75 +1,57 @@
-﻿using System.Collections.Generic;
-using Asset.OnlyHuman.Characters;
-using Assets.UI;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace Assets.Interactions
 {
-    public class Door : InteractableObject, IInteractableOpenable, IInteractableCloseable
+    public class Door : InteractableOpenable
     {
         [SerializeField]
-        private GameObject _hinge;
+        private Rigidbody _rigidbody;
         [SerializeField]
-        private bool _isOpen;
-
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            private set
-            {
-                if(value)
-                {
-                    DefaultInteraction = Close;
-                }
-                else
-                {
-                    DefaultInteraction = Open;
-                }
-                _isOpen = value;
-            }
-        }
+        private HingeJoint _joint;
+        [SerializeField]
+        private NavMeshObstacle _navMeshObstacle;
+        [SerializeField]
+        private float _maxOpenDoorAngle;
+        [SerializeField]
+        private float _maxClosedDoorAngle;
+        private JointLimits _openDoorLimits;
+        private JointLimits _closedDoorLimits;
 
         protected override void Awake()
         {
             base.Awake();
-            IsOpen = _isOpen;
-        }
-
-        protected override void Start()
-        {
-            _contextMenuHandler.Subscribe(new ContextInteractionSubscription(Open, "Open"));
-            _contextMenuHandler.Subscribe(new ContextInteractionSubscription(Close, "Close"));
-        }
-
-        public void Close(EntityController interactingEntity)
-        {
-            AssignInteraction(interactingEntity, OnInteractedClose);
-        }
-
-        public void Open(EntityController interactingEntity)
-        {
-            AssignInteraction(interactingEntity, OnInteractedOpen);
-        }
-
-        private void OnInteractedOpen(EntityController interactinEntity)
-        {
-            if(!IsOpen)
+            _openDoorLimits = new JointLimits
             {
-                _hinge.transform.rotation *= Quaternion.Euler(0.0f, 90.0f, 0.0f);
-                IsOpen = true;
-            }
+                bounceMinVelocity = _joint.limits.bounceMinVelocity,
+                bounciness = _joint.limits.bounciness,
+                contactDistance = _joint.limits.contactDistance,
+                min = _joint.limits.min,
+                max = _maxOpenDoorAngle
+            };
+
+            _closedDoorLimits = new JointLimits
+            {
+                bounceMinVelocity = _joint.limits.bounceMinVelocity,
+                bounciness = _joint.limits.bounciness,
+                contactDistance = _joint.limits.contactDistance,
+                min = _joint.limits.min,
+                max = _maxClosedDoorAngle
+            };
         }
 
-        private void OnInteractedClose(EntityController interactinEntity)
+        protected override void SuccessfullyOpened()
         {
-            if(IsOpen)
-            {
-                _hinge.transform.rotation *= Quaternion.Euler(0.0f, -90.0f, 0.0f);
-                IsOpen = false;
-            }
+            _joint.limits = _openDoorLimits;
+            _navMeshObstacle.enabled = false;
+            _rigidbody.AddForceAtPosition(transform.forward * 10, transform.localPosition);
+        }
+
+        protected override void SuccessfullyClosed()
+        {
+            _rigidbody.AddForceAtPosition(-transform.forward * 10, transform.localPosition);
+            _joint.limits = _closedDoorLimits;
+            _navMeshObstacle.enabled = true;
         }
     }
 }

@@ -14,10 +14,14 @@ namespace Assets.UI
         private Button _button;
         [SerializeField]
         private TMP_Text _text;
-        private ContextActionSubscription _subscription;
+        private IContextActionSubscriber _subscription;
 
-        public ContextActionSubscription Subscription
+        public IContextActionSubscriber Subscription
         {
+            get
+            {
+                return _subscription;
+            }
             set
             {
                 if(value == null)
@@ -28,10 +32,10 @@ namespace Assets.UI
                 {
                     if(_subscription != null)
                     {
-                        ContextActionSelected.RemoveListener(_subscription.OnContextActionSelected);
+                        ContextActionSelected.RemoveListener(_subscription.OnSelectedByContextMenu);
                     }
-                    _text.text = value.ActionTitle;
-                    ContextActionSelected.AddListener(value.OnContextActionSelected);
+                    _text.text = value.ContextActionTitle;
+                    ContextActionSelected.AddListener(value.OnSelectedByContextMenu);
                     _subscription = value;
                 }
             }

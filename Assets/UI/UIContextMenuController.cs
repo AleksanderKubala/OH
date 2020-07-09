@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.UI;
 using Assets.UI.Events;
 using UnityEngine;
@@ -11,9 +12,6 @@ public class UIContextMenuController : MonoBehaviour
     private RectTransform _rectTransform;
     private LinkedList<UIContextAction> _menuActions;
 
-    public ContextMenuDisplayedEvent ContextMenuDisplayed;
-    public ContextMenuCollapsedEvent ContextMenuCollapsed;
-
     private void Awake()
     {
         _menuActions = new LinkedList<UIContextAction>();
@@ -25,7 +23,7 @@ public class UIContextMenuController : MonoBehaviour
         _cancel.transform.SetAsLastSibling();
     }
 
-    public void AddContextAction(ContextActionSubscription contextActionSubscription)
+    public void SetContextAction(IContextActionSubscriber contextActionSubscription)
     {
         var contextAction = ContextActionPool.Instance.GetObjectFromPool();
         contextAction.Subscription = contextActionSubscription;
@@ -40,7 +38,6 @@ public class UIContextMenuController : MonoBehaviour
 
         gameObject.transform.position = screenPointLeftTop;
         gameObject.SetActive(true);
-        ContextMenuDisplayed?.Invoke();
     }
 
     public void Hide()
@@ -52,6 +49,5 @@ public class UIContextMenuController : MonoBehaviour
 
         _menuActions.Clear();
         gameObject.SetActive(false);
-        ContextMenuCollapsed?.Invoke();
     }
 }

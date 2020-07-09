@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using Assets.Managers;
-using Assets.UI.Events;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,11 +8,11 @@ namespace Assets.UI
 {
     public class ContextMenuHandler : MonoBehaviour, IPointerDownHandler
     {
-        private List<ContextActionSubscription> _gatheredSubscriptions;
+        private LinkedList<IContextActionSubscriber> _subscribers;
 
         private void Awake()
         {
-            _gatheredSubscriptions = new List<ContextActionSubscription>();
+            _subscribers = new LinkedList<IContextActionSubscriber>();
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -25,28 +23,35 @@ namespace Assets.UI
             }
         }
 
-        public void Subscribe(ContextActionSubscription subscription)
+        public void Subscribe(IContextActionSubscriber subscriber)
         {
-            _gatheredSubscriptions.Add(subscription);
-            _gatheredSubscriptions.Sort((l, r) => l.Priority.CompareTo(r.Priority));
+            //TODO: implement display priority
+            _subscribers.AddLast(subscriber);
         }
 
-        public void Unsunscribe(ContextActionSubscription subscription)
+        public void Unsubscribe(IContextActionSubscriber subscriber)
         {
-            _gatheredSubscriptions.Remove(subscription);
-            _gatheredSubscriptions.Sort((l, r) => l.Priority.CompareTo(r.Priority));
+            //TODO: implement display priority
+            _subscribers.Remove(subscriber);
         }
 
         private void ExpandContextMenu()
         {
             var contextMenu = UIManager.Instance.GetContextMenu();
-            
-            foreach (var interaction in _gatheredSubscriptions)
+
+            foreach (var subscription in GetActiveSubscriptions())
             {
-                contextMenu.AddContextAction(interaction);
+                contextMenu.SetContextAction(subscription);
             }
 
             contextMenu.Display(Input.mousePosition);
+        }
+
+        protected IEnumerable<IContextActionSubscriber> GetActiveSubscriptions()
+        {
+            var activeSubscribers = _subscribers.Where(x => x.ShowInContextMenu);
+
+            return activeSubscribers;
         }
     }
 }
