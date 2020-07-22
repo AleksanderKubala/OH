@@ -8,18 +8,41 @@ using UnityEngine;
 
 namespace Assets.Interactions
 {
+    //TODO: with current interaction design it will be cumbersome to implement AI logic in the future. Need to think of better solution
     public class InteractionClose : Interaction
     {
         [SerializeField]
         private InteractableOpenable _openable;
 
-        public override bool Perform(EntityController interactingEntity)
+        protected override void Start()
         {
-            var possible = base.Perform(interactingEntity);
+            base.Start();
+        }
 
-            _openable.Close(interactingEntity);
+        public override void Perform(EntityController interactingEntity)
+        {
+            if (_openable.IsOpen && _openable.HasLock && _openable.KeyLock.IsLocked)
+            {
+                //successful = false;
+            }
+            else
+            {
+                _openable.SetClosed();
+            }
+                //_openable.Close(interactingEntity);
+            SetEffectiveByInteractableState();
+        }
 
-            return possible;
+        protected override void SetEffectiveByInteractableState()
+        {
+            if (!_openable.IsOpen && IsEffective)
+            {
+                IsEffective = false;
+            }
+            else
+            {
+                IsEffective = true;
+            }
         }
     }
 }

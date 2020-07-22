@@ -13,20 +13,23 @@ namespace OHLogic.Inventory
         {
             if(capacity <= 0.0f) { throw new ArgumentException($"{nameof(capacity)} must be positive"); }
 
-            Capacity = capacity;
+            MaximumSpace = capacity;
+            TakenSpace = 0.0f;
             _storedItems = new HashSet<IItem>();
         }
         
-        public float Capacity {  get; protected set; }
+        public float MaximumSpace { get; protected set; }
+        public float TakenSpace { get; protected set; }
+        public float SpaceLeft => MaximumSpace - TakenSpace;
 
-        public IEnumerable<IItem> GetStoredItems()
+        public IEnumerable<IItem> GetAllItems()
         {
-            var allItems = _storedItems.Select(x => x);
+            var allItems = _storedItems.ToList();
 
             return allItems;
         }
 
-        public IEnumerable<IItem> GetStoredItems(Func<IItem, bool> predicate)
+        public IEnumerable<IItem> FilterItems(Func<IItem, bool> predicate)
         {
             var  selectedItems = _storedItems.Where(predicate);
 
@@ -41,6 +44,7 @@ namespace OHLogic.Inventory
         public bool PutItemInside(IItem item)
         {
             var addedSuccessfully = _storedItems.Add(item);
+            TakenSpace += item.ItemData.Volume;
 
             return addedSuccessfully;
         }
@@ -48,6 +52,7 @@ namespace OHLogic.Inventory
         public bool TakeItemOut(IItem item)
         {
             var removedSuccessfully = _storedItems.Remove(item);
+            TakenSpace -= item.ItemData.Volume;
 
             return removedSuccessfully;
         }

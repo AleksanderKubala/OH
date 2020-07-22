@@ -5,16 +5,17 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Interactions
 {
+    //TODO: with current interaction design it will be cumbersome to implement AI logic in the future. Need to think of better solution
     public abstract class InteractableOpenable : InteractableObject
     {
         [SerializeField]
         private KeyLock _lock;
         [SerializeField]
         private bool _isOpen;
-        [SerializeField]
-        private Interaction _openInteraction;
-        [SerializeField]
-        private Interaction _closeInteraction;
+        //[SerializeField]
+        //private Interaction _openInteraction;
+        //[SerializeField]
+        //private Interaction _closeInteraction;
 
         public KeyLock KeyLock => _lock;
         public bool HasLock => _lock != null;
@@ -24,66 +25,72 @@ namespace Assets.Interactions
             {
                 return _isOpen;
             }
-            set
+            protected set
             {
                 _isOpen = value;
-                UpdateInteractions();
+                //UpdateInteractions();
             }
         }
 
         protected virtual void Awake()
         {
             IsOpen = _isOpen;
-
         }
 
-        public /*bool*/ void Open(EntityController interactingEntity)
+        //public /*bool*/ void Open(EntityController interactingEntity)
+        //{
+        //    //var successful = true;
+
+        //    if(HasLock && KeyLock.IsLocked)
+        //    {
+        //        //successful = false;
+        //    }
+        //    else
+        //    {
+        //        SuccessfullyOpened();
+        //        IsOpen = true;
+        //    }
+
+        //    //return successful;
+        //}
+
+        //public /*bool*/void Close(EntityController interactingEntity)
+        //{
+        //    //var successful = true;
+
+        //    if(IsOpen && HasLock && KeyLock.IsLocked)
+        //    {
+        //        //successful = false;
+        //    }
+        //    else
+        //    {
+        //        SuccessfullyClosed();
+        //        IsOpen = false;
+        //    }
+
+        //    //return successful;
+        //}
+
+        //protected override void UpdateInteractions()
+        //{
+        //    if(IsOpen)
+        //    {
+        //        _closeInteraction.IsEffective = true;
+        //    }
+        //    else
+        //    {
+        //        _openInteraction.IsEffective = true;
+        //    }
+        //}
+
+        public virtual void SetOpen()
         {
-            //var successful = true;
-
-            if(HasLock && KeyLock.IsLocked)
-            {
-                //successful = false;
-            }
-            else
-            {
-                SuccessfullyOpened();
-                IsOpen = true;
-            }
-
-            //return successful;
+            IsOpen = true;
         }
 
-        public /*bool*/void Close(EntityController interactingEntity)
+        public virtual void SetClosed()
         {
-            //var successful = true;
-
-            if(IsOpen && HasLock && KeyLock.IsLocked)
-            {
-                //successful = false;
-            }
-            else
-            {
-                SuccessfullyClosed();
-                IsOpen = false;
-            }
-
-            //return successful;
+            IsOpen = false;
         }
-
-        protected override void UpdateInteractions()
-        {
-            if(IsOpen)
-            {
-                _closeInteraction.IsEffective = true;
-            }
-            else
-            {
-                _openInteraction.IsEffective = true;
-            }
-        }
-
-        protected abstract void SuccessfullyOpened();
-        protected abstract void SuccessfullyClosed();
     }
 }

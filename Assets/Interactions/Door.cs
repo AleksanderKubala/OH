@@ -15,42 +15,33 @@ namespace Assets.Interactions
         private float _maxOpenDoorAngle;
         [SerializeField]
         private float _maxClosedDoorAngle;
-        private JointLimits _openDoorLimits;
-        private JointLimits _closedDoorLimits;
 
         protected override void Awake()
         {
             base.Awake();
-            _openDoorLimits = new JointLimits
-            {
-                bounceMinVelocity = _joint.limits.bounceMinVelocity,
-                bounciness = _joint.limits.bounciness,
-                contactDistance = _joint.limits.contactDistance,
-                min = _joint.limits.min,
-                max = _maxOpenDoorAngle
-            };
-
-            _closedDoorLimits = new JointLimits
-            {
-                bounceMinVelocity = _joint.limits.bounceMinVelocity,
-                bounciness = _joint.limits.bounciness,
-                contactDistance = _joint.limits.contactDistance,
-                min = _joint.limits.min,
-                max = _maxClosedDoorAngle
-            };
         }
 
-        protected override void SuccessfullyOpened()
+        public override void SetOpen()
         {
-            _joint.limits = _openDoorLimits;
+            base.SetOpen();
+
+            var limits = _joint.limits;
+            limits.max = _maxOpenDoorAngle;
+            _joint.limits = limits;
+
             _navMeshObstacle.enabled = false;
             _rigidbody.AddForceAtPosition(transform.forward * 10, transform.localPosition);
         }
 
-        protected override void SuccessfullyClosed()
+        public override void SetClosed()
         {
+            base.SetClosed();
+
+            var limits = _joint.limits;
+            limits.max = _maxClosedDoorAngle;
+            _joint.limits = limits;
+
             _rigidbody.AddForceAtPosition(-transform.forward * 10, transform.localPosition);
-            _joint.limits = _closedDoorLimits;
             _navMeshObstacle.enabled = true;
         }
     }

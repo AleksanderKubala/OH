@@ -39,15 +39,15 @@ namespace Assets.UI
         {
             var contextMenu = UIManager.Instance.GetContextMenu();
 
-            foreach (var subscription in GetActiveSubscriptions())
+            foreach (var subscriber in GetActiveSubscribers())
             {
-                contextMenu.SetContextAction(subscription);
+                contextMenu.SetContextAction(subscriber);
             }
 
             contextMenu.Display(Input.mousePosition);
         }
 
-        protected IEnumerable<IContextActionSubscriber> GetActiveSubscriptions()
+        protected IEnumerable<IContextActionSubscriber> GetActiveSubscribers()
         {
             var activeSubscribers = _subscribers.Where(x => x.ShowInContextMenu);
 

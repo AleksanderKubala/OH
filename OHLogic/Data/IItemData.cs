@@ -7,7 +7,5 @@ namespace OHLogic.Data
         ItemType ItemType { get; }
 
         IItem CreateItemInstance();
-        float GetCarryingPerformanceCoefficient();
-        float GetUsagePerformanceCoefficient();
     }
 }

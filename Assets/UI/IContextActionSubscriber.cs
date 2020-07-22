@@ -13,6 +13,6 @@ namespace Assets.UI
         string ContextActionTitle { get; }
         bool ShowInContextMenu { get; }
 
-        void OnSelectedByContextMenu();
+        void OnSelectedInContextMenu();
     }
 }

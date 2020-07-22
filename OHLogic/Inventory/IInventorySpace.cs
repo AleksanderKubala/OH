@@ -6,7 +6,8 @@ namespace OHLogic.Inventory
 {
     public interface IInventorySpace
     {
-        IEnumerable<IItem> GetStoredItems(Func<IItem, bool> predicate);
+        IEnumerable<IItem> GetAllItems();
+        IEnumerable<IItem> FilterItems(Func<IItem, bool> predicate);
         bool HasEnoughSpace(IItem item);
         bool PutItemInside(IItem item);
         bool TakeItemOut(IItem item);

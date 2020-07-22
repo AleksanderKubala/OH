@@ -7,6 +7,6 @@ namespace Assets.Interactions
     {
         Transform InteractionSource { get; }
         //PerformInteractionCallback Perform { get; }
-        bool Perform(EntityController interactingEntity);
+        void Perform(EntityController interactingEntity);
     }
 }

@@ -4,7 +4,7 @@ using Assets.UI;
 using Assets.UI.Events;
 using UnityEngine;
 
-public class UIContextMenuController : MonoBehaviour
+public class UIContextMenu : MonoBehaviour
 {
     [SerializeField]
     private UIContextAction _cancel;

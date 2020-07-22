@@ -32,10 +32,10 @@ namespace Assets.UI
                 {
                     if(_subscription != null)
                     {
-                        ContextActionSelected.RemoveListener(_subscription.OnSelectedByContextMenu);
+                        ContextActionSelected.RemoveListener(_subscription.OnSelectedInContextMenu);
                     }
                     _text.text = value.ContextActionTitle;
-                    ContextActionSelected.AddListener(value.OnSelectedByContextMenu);
+                    ContextActionSelected.AddListener(value.OnSelectedInContextMenu);
                     _subscription = value;
                 }
             }
