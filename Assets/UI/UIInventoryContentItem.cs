@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace Assets.UI
 {
+    //TODO: Reconsider inventory, inventory UI and items implementation. Eight now interactions are attached to gameObjects and dropping inventory contents (or any other interaction) from inventory UI  is impossible.
     public class UIInventoryContentItem : MonoBehaviour
     {
         [SerializeField]
@@ -30,11 +31,6 @@ namespace Assets.UI
             }
         }
 
-        private void Start()
-        {
-            Item = _item;
-        }
-
         public string Label
         {
             get
@@ -45,6 +41,11 @@ namespace Assets.UI
             {
                 _textField.text = value ?? "";
             }
+        }
+
+        private void Start()
+        {
+            Item = _item;
         }
     }
 }

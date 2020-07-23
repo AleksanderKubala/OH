@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.GameEntity;
+using Assets.Items;
 
 namespace Assets.Inventory
 {
@@ -8,5 +9,6 @@ namespace Assets.Inventory
     {
         IEnumerable<IInventorySpace> GetInventorySpaces(Func<IInventorySpace, bool> predicate);
         bool GetInventorySpaceByProvider(IInventorySpaceProvider inventorySpaceProvider, out IInventorySpace inventorySpace);
+        bool RemoveItem(IItem item);
     }
 }

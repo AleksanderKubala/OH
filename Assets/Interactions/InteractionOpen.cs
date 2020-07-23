@@ -12,20 +12,21 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _targetState;
 
+        public override Transform InteractionSource => _openable.transform;
         protected override InteractableObject AssociatedInteractable => _openable;
 
         public override void Perform(EntityController interactingEntity)
         {
             //var successful = true;
 
-            if (_openable.IsInState(failingStateSet.IncludedStates))
+            if (failingStateSet.IsFulfilled(_openable.CurrentState))
             {
                 //successful = false;
             }
             else
             {
                 _openable.SetOpen();
-                _openable.ChangeState(_targetState);
+                _openable.AddState(_targetState);
             }
         }
     }

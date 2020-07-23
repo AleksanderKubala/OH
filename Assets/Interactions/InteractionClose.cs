@@ -17,7 +17,9 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _targetState;
 
+        public override Transform InteractionSource => _openable.transform;
         protected override InteractableObject AssociatedInteractable => _openable;
+
 
         protected override void Start()
         {
@@ -26,16 +28,15 @@ namespace Assets.Interactions
 
         public override void Perform(EntityController interactingEntity)
         {
-            if (_openable.IsInState(failingStateSet.IncludedStates))//_openable.IsOpen && _openable.HasLock && _openable.KeyLock.IsLocked)
+            if (failingStateSet.IsFulfilled(_openable.CurrentState))
             {
                 //successful = false;
             }
             else
             {
                 _openable.SetClosed();
-                _openable.ChangeState(_targetState);
+                _openable.AddState(_targetState);
             }
-                //_openable.Close(interactingEntity);
         }
     }
 }

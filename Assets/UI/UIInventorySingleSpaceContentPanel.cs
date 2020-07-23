@@ -33,7 +33,6 @@ namespace Assets.UI
         {
             int loopIteratorStep = Math.Sign(expectedVsPreparedDifference);
 
-            //may be costly computation-wise - candidate for pooling
             for (int i = 0; i != expectedVsPreparedDifference; i += loopIteratorStep)
             {
                 if(expectedVsPreparedDifference < 0)

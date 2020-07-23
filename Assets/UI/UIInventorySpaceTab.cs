@@ -1,5 +1,7 @@
-﻿using Assets.Inventory;
+﻿using System;
+using Assets.Inventory;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.UI
 {
@@ -7,6 +9,8 @@ namespace Assets.UI
     {
         [SerializeField]
         private UIInventorySingleSpaceContentPanel _contentsPanel;
+        [SerializeField]
+        private Text _label;
         private IInventorySpace _inventorySpace;
 
         public IInventorySpace InventorySpaceToDisplay
@@ -18,25 +22,24 @@ namespace Assets.UI
             set
             {
                 _inventorySpace = value;
-                if(_inventorySpace == null)
-                {
-                    gameObject.SetActive(false);
-                }
-                else
-                {
-                    gameObject.SetActive(true);
-                }
+                gameObject.SetActive(_inventorySpace != null);
+                
             }
         }
 
         private void Start()
         {
+            _label.text = "Test Space";
             InventorySpaceToDisplay = _inventorySpace;
         }
 
-        public void OnInventorySpaceTabSelected()
+        public void OnInventorySpaceTabSelected(bool isToggled)
         {
-            //
+            if(isToggled)
+            {
+                _contentsPanel.ChangeDisplayedInventoryContents(_inventorySpace.GetAllItems());
+            }
+
         }
     }
 }

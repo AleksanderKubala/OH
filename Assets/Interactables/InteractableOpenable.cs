@@ -7,37 +7,16 @@ namespace Assets.Interactables
     {
         [SerializeField]
         private KeyLock _lock;
-        [SerializeField]
-        private bool _isOpen;
 
         public KeyLock KeyLock => _lock;
         public bool HasLock => _lock != null;
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
-            }
-            protected set
-            {
-                _isOpen = value;
-            }
-        }
 
         protected override void Awake()
         {
             base.Awake();
-            IsOpen = _isOpen;
         }
 
-        public virtual void SetOpen()
-        {
-            IsOpen = true;
-        }
-
-        public virtual void SetClosed()
-        {
-            IsOpen = false;
-        }
+        public abstract void SetOpen();
+        public abstract void SetClosed();
     }
 }

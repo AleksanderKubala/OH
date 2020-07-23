@@ -21,12 +21,12 @@ namespace Assets.Interactions
         [SerializeField]
         private int _contextMenuPriority;
 
-        public Transform InteractionSource => transform;
         public int ContextMenuPriority => _contextMenuPriority;
         public string ContextActionTitle => _interactionName;
         public bool ShowInContextMenu { get; protected set; }
         public bool IsEffective { get; protected set; }
         protected abstract InteractableObject AssociatedInteractable { get; }
+        public abstract Transform InteractionSource { get; }
 
         private void Awake()
         {
@@ -35,8 +35,10 @@ namespace Assets.Interactions
 
         protected virtual void Start()
         {
-           _contextMenuHandler.Subscribe(this);
-           // SetEffectiveByInteractableState();
+            if(_contextMenuHandler != null)
+            {
+                _contextMenuHandler.Subscribe(this);
+            }
         }
 
         void IContextActionSubscriber.OnSelectedInContextMenu()
@@ -46,7 +48,7 @@ namespace Assets.Interactions
 
         protected virtual void OnInteractableStateChanged(HashSet<InteractableState> interactableNewState)
         {
-            if(interactableNewState.Overlaps(enablingStateSet.IncludedStates))
+            if(enablingStateSet.IsFulfilled(AssociatedInteractable.CurrentState))
             {
                 IsEffective = true;
                 ShowInContextMenu = true;

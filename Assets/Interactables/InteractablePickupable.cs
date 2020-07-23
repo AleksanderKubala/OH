@@ -14,13 +14,14 @@ namespace Assets.Interactables
         public IItemData ItemData => (Item != null) ? Item.ItemData : _itemData;
         public IItem Item { get; set; }
 
-        private void Awake()
+        protected override void Awake()
         {
-            //if (ItemData == null) { throw new Exception($"Item \"{gameObject.name}\" uninitialized"); }
-            //if (Item == null)
-            //{
-            //    Item = _itemData.CreateItemInstance();
-            //}
+            base.Awake();
+            if (ItemData == null) { throw new Exception($"Item \"{gameObject.name}\" uninitialized"); }
+            if (Item == null)
+            {
+                Item = _itemData.CreateItemInstance();
+            }
         }
     }
 }

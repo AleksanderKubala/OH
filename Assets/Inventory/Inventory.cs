@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.GameEntity;
+using Assets.Items;
 
 namespace Assets.Inventory
 {
@@ -46,6 +47,24 @@ namespace Assets.Inventory
             var retrievedInventorySpace = _inventorySpaces.TryGetValue(inventorySpaceProvider, out inventorySpace);
 
             return retrievedInventorySpace;
+        }
+
+        public bool RemoveItem(IItem item)
+        {
+            var inventorySpaceIterator = _inventorySpaces.Values.GetEnumerator();
+            var foundItem = false;
+
+            while(!foundItem && inventorySpaceIterator.MoveNext())
+            {
+                var retrievedItem = inventorySpaceIterator.Current.FilterItems(x => x == item);
+                if(retrievedItem.Any())
+                {
+                    inventorySpaceIterator.Current.TakeItemOut(retrievedItem.First());
+                    foundItem = true;
+                }
+            }
+
+            return foundItem;
         }
     }
 }

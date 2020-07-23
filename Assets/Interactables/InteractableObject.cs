@@ -7,12 +7,16 @@ namespace Assets.Interactables
     //TODO: with current interaction design it will be cumbersome to implement AI logic in the future. Need to think of better solution
     public abstract class InteractableObject : MonoBehaviour
     {
+        //TODO: consider refactoring InteractableStateSet class to use it here
         private HashSet<InteractableState> _internalStateSet;
         [SerializeField]
         private List<InteractableState> _initialStates = new List<InteractableState>();
 
         [HideInInspector]
         public InteractableStateChangedEvent InternalStateChanged;
+
+        //TODO: consider refactoring InteractableStateSet class to use it here
+        public HashSet<InteractableState> CurrentState => new HashSet<InteractableState>(_internalStateSet);
 
         protected virtual void Awake()
         {
@@ -28,11 +32,17 @@ namespace Assets.Interactables
             InternalStateChanged?.Invoke(_internalStateSet);
         }
 
-        public void ChangeState(InteractableState newState)
+        public void AddState(InteractableState newState)
         {
             _internalStateSet.ExceptWith(newState.ExclusiveStates);
             _internalStateSet.Add(newState);
-            InternalStateChanged?.Invoke(new HashSet<InteractableState>(_internalStateSet));
+            InternalStateChanged?.Invoke(CurrentState);
+        }
+
+        public void RemoveState(InteractableState removedState)
+        {
+            _internalStateSet.Remove(removedState);
+            InternalStateChanged?.Invoke(CurrentState);
         }
 
         public bool IsInState(InteractableState state)

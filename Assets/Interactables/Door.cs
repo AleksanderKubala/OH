@@ -23,8 +23,6 @@ namespace Assets.Interactables
 
         public override void SetOpen()
         {
-            base.SetOpen();
-
             var limits = _joint.limits;
             limits.max = _maxOpenDoorAngle;
             _joint.limits = limits;
@@ -35,8 +33,6 @@ namespace Assets.Interactables
 
         public override void SetClosed()
         {
-            base.SetClosed();
-
             var limits = _joint.limits;
             limits.max = _maxClosedDoorAngle;
             _joint.limits = limits;

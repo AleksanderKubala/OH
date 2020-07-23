@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace Assets.Items
 {
+    [CreateAssetMenu(fileName = "Item Data", menuName = "Items/Item Data")]
     public class ItemData : ScriptableObject, IItemData
     {
         public ItemType ItemType => throw new System.NotImplementedException();
         public BodypartType RelevantBodypart => throw new System.NotImplementedException();
-        public float Volume => throw new System.NotImplementedException();
+        public float Volume => 0.0f;
 
         public IItem CreateItemInstance()
         {
-            throw new System.NotImplementedException();
+            return new Item(this);
         }
 
         public float GetCarryingPerformanceCoefficient()
