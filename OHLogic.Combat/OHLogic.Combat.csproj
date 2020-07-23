@@ -41,38 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="_from_unity_awaiting_revision\AttackAction.cs" />
-    <None Include="_from_unity_awaiting_revision\AttackActionDictionary.cs" />
-    <None Include="_from_unity_awaiting_revision\CombatStates\AttackingCombatState.cs" />
-    <None Include="_from_unity_awaiting_revision\CombatStates\DefendingCombatState.cs" />
-    <None Include="_from_unity_awaiting_revision\CombatStates\PursuingCombatState.cs" />
-    <None Include="_from_unity_awaiting_revision\CombatStates\TargetingCombatState.cs" />
-    <None Include="_from_unity_awaiting_revision\DamageType.cs" />
-    <None Include="_from_unity_awaiting_revision\DefenceAction.cs" />
-    <None Include="_from_unity_awaiting_revision\DefensiveActionData.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\AttackActionsGainedEvent.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\AttackSightLost.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\AttackSpotted.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\DefenceActionsGainedEvent.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\EnemyAttackHit.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\EnemySightLost.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\EnemySpotted.cs" />
-    <None Include="_from_unity_awaiting_revision\Events\ReactedToAttacks.cs" />
-    <None Include="_from_unity_awaiting_revision\OffensiveActionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="_from_unity_awaiting_revision\ReactionToAttack.cs" />
-    <None Include="_from_unity_awaiting_revision\SimpleCombatStrategy.cs" />
-    <None Include="_from_unity_awaiting_revision\_abstractScripts\CombatBox.cs" />
-    <None Include="_from_unity_awaiting_revision\_abstract\CombatAction.cs" />
-    <None Include="_from_unity_awaiting_revision\_abstract\CombatState.cs" />
-    <None Include="_from_unity_awaiting_revision\_abstract\ICombatStrategy.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\AttackActionProvider.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\AttackBox.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\AttackDetection.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\DefenceActionProvider.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\EnemyDetection.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\EntityCombatController.cs" />
-    <None Include="_from_unity_awaiting_revision\_scripts\Hitbox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_from_unity_awaiting_revision\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

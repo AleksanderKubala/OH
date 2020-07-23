@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Assets.OH.Vision.Events
+namespace Assets.Vision.Events
 {
     [Serializable]
     public class GameObjectSpottedEvent : UnityEvent<GameObject, LayerMask>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common.Exceptions
+namespace Assets.Common.Exceptions
 {
     class ContextualStateWithoutContextException : NullReferenceException
     {

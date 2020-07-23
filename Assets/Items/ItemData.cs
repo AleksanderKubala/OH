@@ -1,6 +1,5 @@
-﻿using OHLogic.Body;
-using OHLogic.Data;
-using OHLogic.Items;
+﻿using Assets.Body;
+using Assets.Data;
 using UnityEngine;
 
 namespace Assets.Items

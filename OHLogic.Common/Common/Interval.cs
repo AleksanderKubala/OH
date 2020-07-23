@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common
+namespace Assets.Common
 {
     /// <summary>
     /// Implements general logic for value inclusion checking.

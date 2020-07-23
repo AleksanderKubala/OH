@@ -1,4 +1,4 @@
-﻿namespace OHLogic.Common
+﻿namespace Assets.Common
 {
     public interface IContextualState<TContext> : IState where TContext : IStatefulContext
     {

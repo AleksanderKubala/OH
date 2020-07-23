@@ -1,4 +1,4 @@
-﻿using OHLogic.Inventory;
+﻿using Assets.Inventory;
 using UnityEngine;
 
 namespace Assets.UI

@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using Assets.OH.Movement;
-using OHLogic.GameEntity;
-using OHLogic.Body;
-using OHLogic.Inventory;
 using System.Collections.Generic;
 using Assets.Movement;
 using System;
-using OHLogic.Items;
 using Assets.Interactions;
 using System.Linq;
+using Assets.Inventory;
+using Assets.GameEntity;
+using Assets.Items;
+using Assets.Body;
 
 namespace Asset.OnlyHuman.Characters
 {

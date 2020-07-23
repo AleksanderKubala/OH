@@ -1,4 +1,4 @@
-﻿namespace OHLogic.Common
+﻿namespace Assets.Common
 {
     public interface IListener
     {

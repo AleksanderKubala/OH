@@ -1,7 +1,7 @@
-﻿using OHLogic.Data;
+﻿using Assets.Data;
 using UnityEngine;
 
-namespace Assets.OH.Vision
+namespace Assets.Vision
 {
 
     [CreateAssetMenu(fileName = "VisionBodypart", menuName = "Characters/Bodyparts/Vision")]

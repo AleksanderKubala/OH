@@ -1,9 +1,7 @@
-﻿using System;
-using Assets.Managers;
+﻿using Assets.Managers;
 using Assets.UI.Events;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.UI

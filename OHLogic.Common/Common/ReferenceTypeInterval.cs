@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common
+namespace Assets.Common
 {
     /// <summary>
     /// Handles reference-type-specific logic for intervals

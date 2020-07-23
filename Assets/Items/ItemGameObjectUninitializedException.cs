@@ -1,5 +1,5 @@
 ﻿using System;
-using Assets.Interactions;
+using Assets.Interactables;
 
 namespace Assets.Items
 {

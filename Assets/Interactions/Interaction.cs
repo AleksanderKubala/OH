@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Asset.OnlyHuman.Characters;
+using Assets.Interactables;
 using Assets.Managers;
 using Assets.UI;
 using UnityEngine;
@@ -11,7 +13,9 @@ namespace Assets.Interactions
     public abstract class Interaction : ContextMenuSubscriber, IInteraction, IContextActionSubscriber
     {
         [SerializeField]
-        public Interaction[] exclusiveWith;
+        protected InteractableStateSet enablingStateSet;
+        [SerializeField]
+        protected InteractableStateSet failingStateSet;
         [SerializeField]
         private string _interactionName;
         [SerializeField]
@@ -21,26 +25,18 @@ namespace Assets.Interactions
         public int ContextMenuPriority => _contextMenuPriority;
         public string ContextActionTitle => _interactionName;
         public bool ShowInContextMenu { get; protected set; }
-        public bool IsEffective
+        public bool IsEffective { get; protected set; }
+        protected abstract InteractableObject AssociatedInteractable { get; }
+
+        private void Awake()
         {
-            get
-            {   //possible problems if asynchronous access shows up
-                return ShowInContextMenu;
-            }
-            set
-            {
-                ShowInContextMenu = value;
-                foreach (var exclusive in exclusiveWith)
-                {
-                    exclusive.ShowInContextMenu = !value;
-                }
-            }
+            AssociatedInteractable.InternalStateChanged.AddListener(OnInteractableStateChanged);
         }
 
         protected virtual void Start()
         {
            _contextMenuHandler.Subscribe(this);
-            SetEffectiveByInteractableState();
+           // SetEffectiveByInteractableState();
         }
 
         void IContextActionSubscriber.OnSelectedInContextMenu()
@@ -48,7 +44,20 @@ namespace Assets.Interactions
             GameManager.Player.AddInteractionToPerform(this);
         }
 
+        protected virtual void OnInteractableStateChanged(HashSet<InteractableState> interactableNewState)
+        {
+            if(interactableNewState.Overlaps(enablingStateSet.IncludedStates))
+            {
+                IsEffective = true;
+                ShowInContextMenu = true;
+            }
+            else
+            {
+                IsEffective = false;
+                ShowInContextMenu = false;
+            }
+        }
+
         public abstract void Perform(EntityController interactingEntity);
-        protected abstract void SetEffectiveByInteractableState();
     }
 }

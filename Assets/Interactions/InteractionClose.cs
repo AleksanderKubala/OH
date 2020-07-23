@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Asset.OnlyHuman.Characters;
+using Assets.Interactables;
 using UnityEngine;
 
 namespace Assets.Interactions
@@ -13,6 +14,10 @@ namespace Assets.Interactions
     {
         [SerializeField]
         private InteractableOpenable _openable;
+        [SerializeField]
+        private InteractableState _targetState;
+
+        protected override InteractableObject AssociatedInteractable => _openable;
 
         protected override void Start()
         {
@@ -21,28 +26,16 @@ namespace Assets.Interactions
 
         public override void Perform(EntityController interactingEntity)
         {
-            if (_openable.IsOpen && _openable.HasLock && _openable.KeyLock.IsLocked)
+            if (_openable.IsInState(failingStateSet.IncludedStates))//_openable.IsOpen && _openable.HasLock && _openable.KeyLock.IsLocked)
             {
                 //successful = false;
             }
             else
             {
                 _openable.SetClosed();
+                _openable.ChangeState(_targetState);
             }
                 //_openable.Close(interactingEntity);
-            SetEffectiveByInteractableState();
-        }
-
-        protected override void SetEffectiveByInteractableState()
-        {
-            if (!_openable.IsOpen && IsEffective)
-            {
-                IsEffective = false;
-            }
-            else
-            {
-                IsEffective = true;
-            }
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Assets.UI;
-using Assets.UI.Events;
 using UnityEngine;
 
 public class UIContextMenu : MonoBehaviour

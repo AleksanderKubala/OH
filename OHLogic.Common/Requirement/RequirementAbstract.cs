@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OHLogic.Common.Requirement
+namespace Assets.Common.Requirement
 {
     /// <summary>
     /// Used to represents a need/demand that an instance of given type should satisfy in a way specified by implementing classes.

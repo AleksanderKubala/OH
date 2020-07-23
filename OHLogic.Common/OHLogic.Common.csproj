@@ -41,9 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Common\AbstractContextualState.cs" />
-    <None Include="Common\ContextualStatefulBehaviour.cs" />
-    <None Include="Common\ContextualTickNotifierBehaviour.cs" />
     <Compile Include="Common\DescribableObject.cs" />
     <Compile Include="Common\IContextualState.cs" />
     <Compile Include="Common\IDescribable.cs" />

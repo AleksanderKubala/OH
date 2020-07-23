@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common
+namespace Assets.Common
 {
     [Flags]
     public enum IntervalBoundsCheckSetting

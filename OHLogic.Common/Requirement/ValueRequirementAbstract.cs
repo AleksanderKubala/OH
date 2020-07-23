@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common.Requirement
+namespace Assets.Common.Requirement
 {
     /// <summary>
     /// Uses IInterval<> objects to verify checked value.

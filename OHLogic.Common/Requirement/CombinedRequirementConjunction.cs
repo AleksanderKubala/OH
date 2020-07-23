@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OHLogic.Common.Requirement
+namespace Assets.Common.Requirement
 {
     /// <summary>
     /// Evaluates itself using logical AND operator on contained subrequirements 

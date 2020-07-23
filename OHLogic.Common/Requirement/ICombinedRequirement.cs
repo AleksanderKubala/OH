@@ -1,4 +1,4 @@
-﻿namespace OHLogic.Common.Requirement
+﻿namespace Assets.Common.Requirement
 {
     /// <summary>
     /// Used to combine different types of requirements into one requirement and evaluating all subrequirements collectively as implemented.

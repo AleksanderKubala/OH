@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using OHLogic.Inventory;
-using OHLogic.Items;
+using Assets.Items;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.UI
 {

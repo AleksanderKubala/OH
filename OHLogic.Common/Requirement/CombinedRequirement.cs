@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OHLogic.Common.Requirement
+namespace Assets.Common.Requirement
 {
     /// <summary>
     /// Implements a argument-not-null check for combining logic and throws ArgumentNullException if it is so.

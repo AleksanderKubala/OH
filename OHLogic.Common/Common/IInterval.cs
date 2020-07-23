@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common
+namespace Assets.Common
 {
     /// <summary>
     /// Represents subset of orderable values laying inbetween given bounds ordered from lower bound to upper bound.

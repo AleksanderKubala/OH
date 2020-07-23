@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Asset.OnlyHuman.Characters;
+using Assets.Interactables;
 using UnityEngine;
 
 namespace Assets.Interactions
@@ -8,6 +9,8 @@ namespace Assets.Interactions
     {
         [SerializeField]
         private InteractablePickupable _pickupable;
+
+        protected override InteractableObject AssociatedInteractable => _pickupable;
 
         public override void Perform(EntityController interactingEntity)
         {
@@ -19,11 +22,6 @@ namespace Assets.Interactions
                 IsEffective = false;
             }
 
-        }
-
-        protected override void SetEffectiveByInteractableState()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

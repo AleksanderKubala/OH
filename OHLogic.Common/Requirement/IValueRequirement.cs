@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OHLogic.Common.Requirement
+namespace Assets.Common.Requirement
 {
     /// <summary>
     /// More specific type of a requirement that strictly checks if the selected instance's data is within given range.
