@@ -41,32 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DescribableObject.cs" />
-    <Compile Include="Common\IContextualState.cs" />
-    <Compile Include="Common\IDescribable.cs" />
-    <Compile Include="Common\ICommand.cs" />
-    <Compile Include="Common\IType.cs" />
-    <Compile Include="Common\IInterval.cs" />
-    <Compile Include="Common\IListener.cs" />
-    <Compile Include="Common\IntervalBoundsCheckSetting.cs" />
-    <Compile Include="Common\IState.cs" />
-    <Compile Include="Common\IStatefulContext.cs" />
-    <Compile Include="Common\ITickNotifier.cs" />
-    <Compile Include="Common\ReferenceTypeInterval.cs" />
-    <Compile Include="Common\ValueTypeInterval.cs" />
-    <Compile Include="Exceptions\ContextualStateWithoutContextException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Requirement\CombinedRequirement.cs" />
-    <Compile Include="Requirement\CombinedRequirementConjunction.cs" />
-    <Compile Include="Requirement\CombinedRequirementDisjunction.cs" />
-    <Compile Include="Requirement\ICombinedRequirement.cs" />
-    <Compile Include="Common\Interval.cs" />
-    <Compile Include="Requirement\IRequirement.cs" />
-    <Compile Include="Requirement\IValueRequirement.cs" />
-    <Compile Include="Requirement\RequirementAbstract.cs" />
-    <Compile Include="Requirement\ValueRequirementAbstract.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "D:\UnityProjects\OH\OH\OHLogic.Common\bin\Debug\OHLogic.Common.dll" "D:\UnityProjects\OH\OH\Assets"</PostBuildEvent>
