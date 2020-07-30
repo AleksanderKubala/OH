@@ -1,13 +1,12 @@
-﻿using Assets.Items;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-public class UIText : MonoBehaviour
+public class UITextField : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text textRender;
     [SerializeField]
-    private RectTransform textTransform;
+    protected RectTransform textTransform;
 
     public string Text
     {
@@ -17,7 +16,6 @@ public class UIText : MonoBehaviour
         }
         set
         {
-            textRender.autoSizeTextContainer = true;
             textRender.text = value ?? "";
         }
     }

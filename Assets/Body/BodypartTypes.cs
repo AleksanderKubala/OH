@@ -6,22 +6,22 @@ namespace Assets.Body
 {
     public static partial class BodypartTypes
     {
-        public static readonly BodypartType None = BodypartTypeNone.Instance;
+        //public static readonly BodypartType None = BodypartTypeNone.Instance;
 
-        static BodypartTypes()
-        {
-            var groupsWithCycles = BodypartType.FindGroupCycles();
+        //static BodypartTypes()
+        //{
+        //    var groupsWithCycles = BodypartType.FindGroupCycles();
 
-            if (groupsWithCycles.Any())
-            {
-                var joinedGroupsNames = new StringBuilder();
-                foreach (var group in groupsWithCycles)
-                {
-                    joinedGroupsNames.Append(group.Name + " ");
-                }
+        //    if (groupsWithCycles.Any())
+        //    {
+        //        var joinedGroupsNames = new StringBuilder();
+        //        foreach (var group in groupsWithCycles)
+        //        {
+        //            joinedGroupsNames.Append(group.Name + " ");
+        //        }
 
-                throw new Exception($"Detected cycles for following bodypart type groups: {joinedGroupsNames}");
-            }
-        }
+        //        throw new Exception($"Detected cycles for following bodypart type groups: {joinedGroupsNames}");
+        //    }
+        //}
     }
 }

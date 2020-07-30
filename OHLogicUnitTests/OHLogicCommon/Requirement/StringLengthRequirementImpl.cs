@@ -1,5 +1,4 @@
-﻿using OHLogic.Common;
-using OHLogic.Common.Requirement;
+﻿using Assets.Common;
 
 namespace OHLogicUnitTests.Requirement
 {

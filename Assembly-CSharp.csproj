@@ -78,10 +78,35 @@
     <Compile Include="Assets\Common\AbstractContextualState.cs" />
     <Compile Include="Assets\Common\ContextualStatefulBehaviour.cs" />
     <Compile Include="Assets\Common\ContextualTickNotifierBehaviour.cs" />
+    <Compile Include="Assets\Common\Exceptions\ContextualStateWithoutContextException.cs" />
+    <Compile Include="Assets\Common\GameObjectType.cs" />
+    <Compile Include="Assets\Common\IContextualState.cs" />
+    <Compile Include="Assets\Common\IDescribable.cs" />
+    <Compile Include="Assets\Common\IListener.cs" />
+    <Compile Include="Assets\Common\INamedObject.cs" />
+    <Compile Include="Assets\Common\IState.cs" />
+    <Compile Include="Assets\Common\IStatefulContext.cs" />
+    <Compile Include="Assets\Common\ITickNotifier.cs" />
+    <Compile Include="Assets\Common\IType.cs" />
+    <Compile Include="Assets\Common\Identifier.cs" />
+    <Compile Include="Assets\Common\Interval\IInterval.cs" />
+    <Compile Include="Assets\Common\Interval\Interval.cs" />
+    <Compile Include="Assets\Common\Interval\IntervalBoundsCheckSetting.cs" />
+    <Compile Include="Assets\Common\Interval\ReferenceTypeInterval.cs" />
+    <Compile Include="Assets\Common\Interval\ValueTypeInterval.cs" />
+    <Compile Include="Assets\Common\Requirement\CombinedRequirement.cs" />
+    <Compile Include="Assets\Common\Requirement\CombinedRequirementConjunction.cs" />
+    <Compile Include="Assets\Common\Requirement\CombinedRequirementDisjunction.cs" />
+    <Compile Include="Assets\Common\Requirement\ICombinedRequirement.cs" />
+    <Compile Include="Assets\Common\Requirement\IRequirement.cs" />
+    <Compile Include="Assets\Common\Requirement\IValueRequirement.cs" />
+    <Compile Include="Assets\Common\Requirement\RequirementAbstract.cs" />
+    <Compile Include="Assets\Common\Requirement\ValueRequirementAbstract.cs" />
     <Compile Include="Assets\Common\UnityObjectPool.cs" />
     <Compile Include="Assets\Data\IActionData.cs" />
     <Compile Include="Assets\Data\IBodypartData.cs" />
     <Compile Include="Assets\Data\IEquipableObjectData.cs" />
+    <Compile Include="Assets\Data\IInteractableObjectData.cs" />
     <Compile Include="Assets\Data\IItemData.cs" />
     <Compile Include="Assets\Data\IMaterialData.cs" />
     <Compile Include="Assets\Data\IPickupableObjectData.cs" />
@@ -110,12 +135,15 @@
     <Compile Include="Assets\Interactables\Events\InteractableHighlightedEvent.cs" />
     <Compile Include="Assets\Interactables\Events\InteractableStateChangedEvent.cs" />
     <Compile Include="Assets\Interactables\Events\InteractableUnhighlightedEvent.cs" />
+    <Compile Include="Assets\Interactables\IInteractable.cs" />
     <Compile Include="Assets\Interactables\InteractableObject.cs" />
+    <Compile Include="Assets\Interactables\InteractableObjectData.cs" />
     <Compile Include="Assets\Interactables\InteractableOpenable.cs" />
     <Compile Include="Assets\Interactables\InteractablePickupable.cs" />
     <Compile Include="Assets\Interactables\InteractableState.cs" />
     <Compile Include="Assets\Interactables\InteractableStateSet.cs" />
     <Compile Include="Assets\Interactables\InteractiveObjectHighlight.cs" />
+    <Compile Include="Assets\Interactables\Item.cs" />
     <Compile Include="Assets\Interactables\KeyLock.cs" />
     <Compile Include="Assets\Interactions\IInteraction.cs" />
     <Compile Include="Assets\Interactions\Interaction.cs" />
@@ -123,6 +151,7 @@
     <Compile Include="Assets\Interactions\InteractionDrop.cs" />
     <Compile Include="Assets\Interactions\InteractionOpen.cs" />
     <Compile Include="Assets\Interactions\InteractionPutIntoInventory.cs" />
+    <Compile Include="Assets\Interactions\InteractionSet.cs" />
     <Compile Include="Assets\Inventory\Events\InventoryStateChangedEventArgs.cs" />
     <Compile Include="Assets\Inventory\IInventory.cs" />
     <Compile Include="Assets\Inventory\IInventorySpace.cs" />
@@ -157,20 +186,28 @@
     <Compile Include="Assets\UI\ContextActionPool.cs" />
     <Compile Include="Assets\UI\ContextActionSubscription.cs" />
     <Compile Include="Assets\UI\ContextMenuHandler.cs" />
-    <Compile Include="Assets\UI\ContextMenuSubscriber.cs" />
     <Compile Include="Assets\UI\Events\ContextActionSelectedEvent.cs" />
     <Compile Include="Assets\UI\Events\ContextMenuCalledEvent.cs" />
+    <Compile Include="Assets\UI\Events\InteractionsSubmittedEvent.cs" />
+    <Compile Include="Assets\UI\Events\InventoryItemButtonAddedEvent.cs" />
+    <Compile Include="Assets\UI\Events\InventoryItemToggledEvent.cs" />
+    <Compile Include="Assets\UI\Events\TooltipDisplayedEvent.cs" />
+    <Compile Include="Assets\UI\Events\TooltipDisplayedEventArgs.cs" />
     <Compile Include="Assets\UI\IContextActionSubscriber.cs" />
+    <Compile Include="Assets\UI\ITooltipSubscriber.cs" />
+    <Compile Include="Assets\UI\TooltipHandler.cs" />
     <Compile Include="Assets\UI\UIContextAction.cs" />
     <Compile Include="Assets\UI\UIContextMenu.cs" />
-    <Compile Include="Assets\UI\UIInventory.cs" />
-    <Compile Include="Assets\UI\UIInventoryContent.cs" />
-    <Compile Include="Assets\UI\UIInventoryContentItem.cs" />
-    <Compile Include="Assets\UI\UIInventorySingleSpaceContentPanel.cs" />
+    <Compile Include="Assets\UI\UIInventoryInteractionButton.cs" />
+    <Compile Include="Assets\UI\UIInventoryInteractionPanel.cs" />
+    <Compile Include="Assets\UI\UIInventorySpaceContentsItem.cs" />
+    <Compile Include="Assets\UI\UIInventorySpaceContentsPanel.cs" />
     <Compile Include="Assets\UI\UIInventorySpaceTab.cs" />
-    <Compile Include="Assets\UI\UIText.cs" />
+    <Compile Include="Assets\UI\UIInventorySpaceTabsPanel.cs" />
     <Compile Include="Assets\UI\UITextDisplay.cs" />
+    <Compile Include="Assets\UI\UITextField.cs" />
     <Compile Include="Assets\UI\UITextPool.cs" />
+    <Compile Include="Assets\UI\UITooltip.cs" />
     <Compile Include="Assets\Utils\Utility.cs" />
     <Compile Include="Assets\Vision\Events\GameObjectSightLostEvent.cs" />
     <Compile Include="Assets\Vision\Events\GameObjectSpottedEvent.cs" />
@@ -463,9 +500,6 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="OHLogic.Common">
-      <HintPath>D:/UnityProjects/OH/OH/Assets/OHLogic.Common.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/UnityProjects/OH/OH/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>

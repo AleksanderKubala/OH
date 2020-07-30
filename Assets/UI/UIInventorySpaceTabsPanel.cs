@@ -6,12 +6,10 @@ using UnityEngine;
 
 namespace Assets.UI
 {
-    public class UIInventoryContent : MonoBehaviour
+    public class UIInventorySpaceTabsPanel : MonoBehaviour
     {
         [SerializeField]
         private GameObject _inventorySpaceTabPrefab;
-        [SerializeField]
-        private GameObject _inventorySpaceTabsPanel;
         [SerializeField]
         private List<UIInventorySpaceTab> _inventorySpaceTabs;
         
@@ -26,15 +24,13 @@ namespace Assets.UI
 
         private void Start()
         {
-            _displayedInventory = GameManager.Player.Inventory;
-            Display(_displayedInventory);
-            
+            Display(GameManager.Player.Inventory);
         }
 
         //TODO: for now - replace with proper code later
         public void Display(IInventory inventory)
         {
-            //_displayedInventory = inventory;
+            _displayedInventory = inventory;
             var inventorySpaces = _displayedInventory.GetInventorySpaces(x => true);
             _inventorySpaceTabs[0].InventorySpaceToDisplay = inventorySpaces.First();
         }

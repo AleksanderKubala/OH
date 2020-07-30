@@ -12,7 +12,6 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _targetState;
 
-        public override Transform InteractionSource => _openable.transform;
         protected override InteractableObject AssociatedInteractable => _openable;
 
         public override void Perform(EntityController interactingEntity)

@@ -8,7 +8,7 @@ namespace Assets.UI
     public class UIInventorySpaceTab : MonoBehaviour
     {
         [SerializeField]
-        private UIInventorySingleSpaceContentPanel _contentsPanel;
+        private UIInventorySpaceContentsPanel _contentsPanel;
         [SerializeField]
         private Text _label;
         private IInventorySpace _inventorySpace;
@@ -23,13 +23,15 @@ namespace Assets.UI
             {
                 _inventorySpace = value;
                 gameObject.SetActive(_inventorySpace != null);
-                
+                if(gameObject.activeSelf)
+                {
+                    _label.text = _inventorySpace.Name;
+                }
             }
         }
 
         private void Start()
         {
-            _label.text = "Test Space";
             InventorySpaceToDisplay = _inventorySpace;
         }
 
@@ -39,7 +41,6 @@ namespace Assets.UI
             {
                 _contentsPanel.ChangeDisplayedInventoryContents(_inventorySpace.GetAllItems());
             }
-
         }
     }
 }

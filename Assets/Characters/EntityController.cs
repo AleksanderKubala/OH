@@ -146,7 +146,7 @@ namespace Asset.OnlyHuman.Characters
 
         public IInventorySpace GetInventorySpace()
         {
-            return new InventorySpace(float.MaxValue);
+            return new InventorySpace(gameObject.name + "'s personal space" , float.MaxValue);
         }
     }
 }

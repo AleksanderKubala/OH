@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.GameEntity;
+using Assets.Interactables;
 using Assets.Items;
 
 namespace Assets.Inventory
@@ -49,7 +50,7 @@ namespace Assets.Inventory
             return retrievedInventorySpace;
         }
 
-        public bool RemoveItem(IItem item)
+        public bool RemoveItem(IInteractable item)
         {
             var inventorySpaceIterator = _inventorySpaces.Values.GetEnumerator();
             var foundItem = false;
