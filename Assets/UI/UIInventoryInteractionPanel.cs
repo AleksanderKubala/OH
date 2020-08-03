@@ -3,120 +3,76 @@ using System.Linq;
 using Assets.Interactables;
 using Assets.Interactions;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.UI
 {
-    public class UIInventoryInteractionPanel : MonoBehaviour
+    //TODO: generalise UIInventorySpaceContentPanel, UIInventoryInteractionPanel, UIInventorySpaceTabPanel
+    public class UIInventoryInteractionPanel : UIDynamicContentPanel<Interaction, UIInventoryInteractionButton>
     {
-        [SerializeField]
-        private GameObject _interactionButtonPrefab;
-        [SerializeField]
-        private List<UIInventoryInteractionButton> _unusedInteractionButtons;
-        private List<UIInventoryInteractionButton> _activeInteractionButtons;
         private LinkedList<IInteractable> _toggledInventoryItems;
 
-        private void Awake()
+        protected override Transform ContentsParent => transform; 
+
+        protected void Awake()
         {
-            _activeInteractionButtons = new List<UIInventoryInteractionButton>(_unusedInteractionButtons.Count);
             _toggledInventoryItems = new LinkedList<IInteractable>();
         }
 
-
-        public void OnInventoryItemToggled(bool toggled, IInteractable interactable)
+        public void OnInventoryItemDeselected(IInteractable interactable)
         {
-            _toggledInventoryItems.AddLast(interactable);
             HashSet<Interaction> interactionsSet = interactable.Interactions;
+            _toggledInventoryItems.Remove(interactable);
 
-            if(toggled)
+            for(int i = 0; i < _unusedElementsSubListIndex; i++)
             {
-                PrepareInteractionButtons(interactionsSet);
+                _contentElements[i].WithdrawInteractionSupport(interactionsSet);
+                if(_contentElements[i].InteractionIsSupported == false)
+                {
+                    ResetContentElementButton(_contentElements[i], null);
+                }
+            }
+            RepositionElements(Comparer<UIInventoryInteractionButton>.Default);
+            _unusedElementsSubListIndex = _contentElements.FindIndex(x => x.Interaction == null);
+        }
+
+        public void OnInventoryItemSelected(IInteractable interactable)
+        {
+            HashSet<Interaction> interactionsSet = interactable.Interactions;
+            _toggledInventoryItems.AddLast(interactable);
+            if (_contentElements.Count < interactionsSet.Count)
+            {
+                CreateMultipleUIContentElements(interactionsSet.Count - _contentElements.Count);
+            }
+            var newInteractions = interactionsSet.Except(_contentElements.GetRange(0, _unusedElementsSubListIndex).Select(x => x.Interaction));
+            if (newInteractions.Any())
+            {
+                AppendUIContentElement(newInteractions);
             }
 
-            UpdateInteractionsSupport(toggled, interactionsSet);
-            CleanActiveButtonsList(toggled);
+            _contentElements.ForEach(x => x.SupportInteraction(interactionsSet));
+            RepositionElements(Comparer<UIInventoryInteractionButton>.Default);
+            _unusedElementsSubListIndex = _contentElements.FindIndex(x => x.Interaction == null);
         }
 
         public void OnInventoryItemButtonAdded(UIInventorySpaceContentsItem itemToggleButton)
         {
-            itemToggleButton.InventoryItemToggled.AddListener(OnInventoryItemToggled);
+            itemToggleButton.InventoryItemSelected.AddListener(OnInventoryItemSelected);
+            itemToggleButton.InventoryItemDeselected.AddListener(OnInventoryItemDeselected);
         }
 
-        private void UpdateInteractionsSupport(bool inSupportPath, HashSet<Interaction> interactionsSet)
+        protected override void ResetContentElementButton(UIInventoryInteractionButton interactionButton, Interaction interaction)
         {
-            foreach(var button in _activeInteractionButtons)
-            {
-                UpdateInteractionSupportOfSingleButton(button, inSupportPath, interactionsSet);
-            }
+            interactionButton.Interaction = interaction;
         }
 
-        private void UpdateInteractionSupportOfSingleButton(UIInventoryInteractionButton button, bool inSupportPath, HashSet<Interaction> interactionsSet)
+        protected override UIInventoryInteractionButton GetUIContentElementWithContent(Interaction interaction)
         {
-            bool interactionHasButton;
-
-            if (inSupportPath)
-            {
-                interactionHasButton = button.SupportInteraction(interactionsSet);
-            }
-            else
-            {
-                interactionHasButton = button.WithdrawInteractionSupport(interactionsSet);
-            }
-
-            if (interactionHasButton)
-            {
-                interactionsSet.Remove(button.Interaction);
-            }
+            return _contentElements.First(x => x.Interaction.Equals(interaction));
         }
 
-        private void PrepareInteractionButtons(HashSet<Interaction> newInteractions)
+        protected override bool IsUIElementUnused(UIInventoryInteractionButton uiElement)
         {
-            var unsupportedInteractions = newInteractions.Except(_activeInteractionButtons.Select(x => x.Interaction));
-            var unsupportedInteractionsCount = unsupportedInteractions.Count();
-
-            if (unsupportedInteractionsCount > _unusedInteractionButtons.Count)
-            {
-                AddInteractionButtons(unsupportedInteractionsCount - _unusedInteractionButtons.Count);
-            }
-
-            SetButtonsForUnsupportedInteractions(unsupportedInteractions);
+            return uiElement.Interaction == null;
         }
-
-        private void AddInteractionButtons(int count)
-        {
-
-        }
-
-        private void SetButtonsForUnsupportedInteractions(IEnumerable<Interaction> unsupportedInteractions)
-        {
-            var unsupportedInteractionsIterator = unsupportedInteractions.GetEnumerator();
-            for (int j = _unusedInteractionButtons.Count - 1; unsupportedInteractionsIterator.MoveNext(); j--)
-            {
-                _unusedInteractionButtons[j].Interaction = unsupportedInteractionsIterator.Current;
-                _activeInteractionButtons.Add(_unusedInteractionButtons[j]);
-                _unusedInteractionButtons.RemoveAt(j);
-            }
-        }
-
-        private void CleanActiveButtonsList(bool inSupportPath)
-        {
-            if(!inSupportPath)
-            {
-                var unusedButtonsAsActive = _activeInteractionButtons.Where(x => x.Interaction == null);
-                foreach(var dirtyButton in unusedButtonsAsActive)
-                {
-                    _activeInteractionButtons.Remove(dirtyButton);
-                    _unusedInteractionButtons.Add(dirtyButton);
-                }
-            }
-
-            _activeInteractionButtons.Sort((l, r) => l.Interaction.Name.CompareTo(r.Interaction.Name));
-
-            for(int i = 0; i < _activeInteractionButtons.Count; i++)
-            {
-                _activeInteractionButtons[i].transform.SetSiblingIndex(i);
-            }
-        }
-
     }
 }

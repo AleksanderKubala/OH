@@ -1,4 +1,6 @@
-﻿using Assets.Interactables;
+﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Assets.Interactables;
 using Assets.Items;
 using Assets.UI.Events;
 using UnityEngine;
@@ -7,13 +9,17 @@ using UnityEngine.UI;
 namespace Assets.UI
 {
     //TODO: Reconsider inventory, inventory UI and items implementation. Eight now interactions are attached to gameObjects and dropping inventory contents (or any other interaction) from inventory UI  is impossible.
-    public class UIInventorySpaceContentsItem : MonoBehaviour, ITooltipSubscriber
+    public class UIInventorySpaceContentsItem : MonoBehaviour, ITooltipSubscriber, IComparable<UIInventorySpaceContentsItem>
     {
         [SerializeField]
         private Text _label;
+        private Toggle _toggle;
         private IInteractable _interactableObject;
 
-        public InventoryItemToggledEvent InventoryItemToggled;
+        [HideInInspector]
+        public InventoryItemEvent InventoryItemSelected;
+        [HideInInspector]
+        public InventoryItemEvent InventoryItemDeselected;
 
         public IInteractable Interactable
         {
@@ -25,15 +31,21 @@ namespace Assets.UI
             {
                 _interactableObject = value;
                 gameObject.SetActive(_interactableObject != null);
-                if(gameObject.activeSelf)
-                {
-                    _label.text = _interactableObject.Name;
-                }
+                SetLabel();
             }
+        }
+
+        public bool Toggled
+        {
+            get => _toggle.isOn;
+            set => _toggle.isOn = value;
         }
 
         private void Awake()
         {
+            //InventoryItemDeselected = new InventoryItemEvent();
+            //InventoryItemDeselected = new InventoryItemEvent();
+            _toggle = GetComponent<Toggle>();
             Interactable = _interactableObject;
         }
 
@@ -47,7 +59,42 @@ namespace Assets.UI
 
         public void OnToggleValueChanged(bool value)
         {
-            InventoryItemToggled?.Invoke(value, _interactableObject);
+            if(value)
+            {
+                InventoryItemSelected?.Invoke(_interactableObject);
+            }
+            else
+            {
+                InventoryItemDeselected?.Invoke(_interactableObject);
+            }
+        }
+
+        private void SetLabel()
+        {
+            if(_interactableObject != null)
+            {
+                _label.text = _interactableObject.Name ?? "null";
+            }
+        }
+
+        public int CompareTo(UIInventorySpaceContentsItem other)
+        {
+            if (other != null && other.Interactable != null && this.Interactable != null)
+            {
+                return Interactable.Name.CompareTo(other.Interactable.Name);
+            }
+            else if (this.Interactable != null && other.Interactable == null)
+            {
+                return -1;
+            }
+            else if (this.Interactable == null && other.Interactable != null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

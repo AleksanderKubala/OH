@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Interactions;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assets.UI
 {
-    public class UIInventoryInteractionButton : MonoBehaviour
+    public class UIInventoryInteractionButton : MonoBehaviour, IComparable<UIInventoryInteractionButton>
     {
         [SerializeField]
         private Text _label;
@@ -25,37 +26,32 @@ namespace Assets.UI
                 _interaction = value;
                 interactablesSupportingInteraction = 0;
                 interactablesWithEffectiveInteraction = 0;
-                if (_interaction == null)
-                {
-                    gameObject.SetActive(false);
-                }
+                gameObject.SetActive(_interaction != null);
+                SetLabel();
             }
         }
+
+        public bool InteractionIsSupported => _interaction != null && interactablesSupportingInteraction > 0;
 
         private void Awake()
         {
             Interaction = _interaction;
         }
 
-        public bool SupportInteraction(HashSet<Interaction> interactions)
+        public void SupportInteraction(HashSet<Interaction> interactions)
         {
-            var concreteInteraction = interactions.Where(x => x.Equals(_interaction)).FirstOrDefault();
-            if (concreteInteraction != null)
+            if (interactions.Contains(_interaction))
             {
                 interactablesSupportingInteraction++;
+                var concreteInteraction = interactions.Where(x => x.Equals(_interaction)).FirstOrDefault();
                 if (concreteInteraction.IsEffective)
                 {
                     interactablesWithEffectiveInteraction++;
                 }
-                UpdateUIElement();
-
-                return true;
             }
-
-            return false;
         }
 
-        public bool WithdrawInteractionSupport(HashSet<Interaction> interactions)
+        public void WithdrawInteractionSupport(HashSet<Interaction> interactions)
         {
             if(interactions.Contains(_interaction))
             {
@@ -67,31 +63,39 @@ namespace Assets.UI
                 {
                     interactablesWithEffectiveInteraction--;
                 }
-                if(interactablesSupportingInteraction == 0)
+                if(interactablesSupportingInteraction <= 0)
                 {
                     Interaction = null;
                 }
-                UpdateUIElement();
-
-                return true;
             }
-
-            return false;
         }
 
-        private void UpdateUIElement()
+        private void SetLabel()
         {
-            if(interactablesWithEffectiveInteraction > 0 && interactablesWithEffectiveInteraction == interactablesSupportingInteraction)
+            if(_interaction != null)
             {
-                if (!gameObject.activeSelf)
-                {
-                    gameObject.SetActive(true);
-                }
+                _label.text = _interaction.Name ?? "null";
+            }
+        }
+
+        public int CompareTo(UIInventoryInteractionButton other)
+        {
+            if (other != null && other.Interaction != null && this.Interaction != null)
+            {
+                return Interaction.Name.CompareTo(other.Interaction.Name);
+            }
+            else if (this.Interaction != null && other.Interaction == null)
+            {
+                return -1;
+            }
+            else if (this.Interaction == null && other.Interaction != null)
+            {
+                return 1;
             }
             else
             {
-                gameObject.SetActive(false);
-            }
+                return 0;
+            }            
         }
     }
 }

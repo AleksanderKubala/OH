@@ -1,7 +1,9 @@
-﻿namespace Assets.Inventory
+﻿using System.Collections.Generic;
+
+namespace Assets.Inventory
 {
     public interface IInventorySpaceProvider
     {
-        IInventorySpace GetInventorySpace(); 
+        IEnumerable<IInventorySpace> GetInventorySpaces(); 
     }
 }

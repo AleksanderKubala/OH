@@ -1,9 +1,11 @@
-﻿using Assets.Common;
+﻿using System.Runtime.Remoting.Messaging;
+using Assets.Common;
 using Assets.Data;
 using UnityEngine;
 
 namespace Assets.Interactables
 {
+    [CreateAssetMenu(fileName = "InteractableObjectData", menuName = "Interactables/Interactable Object Data")]
     public class InteractableObjectData : ScriptableObject, IInteractableObjectData
     {
         [SerializeField]
@@ -13,11 +15,11 @@ namespace Assets.Interactables
         [SerializeField]
         private string _description;
 
-        public GameObjectType ObjectType => throw new System.NotImplementedException();
-        public string Name => throw new System.NotImplementedException();
+        public GameObjectType ObjectType => _gameObjectType;
+        public string Name => _name;
         public string GetDescription()
         {
-            throw new System.NotImplementedException();
+            return _description;
         }
     }
 }

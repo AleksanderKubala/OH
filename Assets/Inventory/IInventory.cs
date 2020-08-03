@@ -5,10 +5,13 @@ using Assets.Interactables;
 
 namespace Assets.Inventory
 {
-    public interface IInventory : IGameEntityOwned
+    public interface IInventory : IGameEntityOwned, IEnumerable<IInventorySpace>
     {
-        IEnumerable<IInventorySpace> GetInventorySpaces(Func<IInventorySpace, bool> predicate);
-        bool GetInventorySpaceByProvider(IInventorySpaceProvider inventorySpaceProvider, out IInventorySpace inventorySpace);
+        event EventHandler<IInventorySpace> InventoryExpanded;
+        event EventHandler<IInventorySpace> InventoryShrank;
+
         bool RemoveItem(IInteractable item);
+        void Expand(IInventorySpace inventorySpace);
+        void Shrink(IInventorySpace inventorySpace);
     }
 }

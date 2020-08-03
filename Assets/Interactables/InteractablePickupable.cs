@@ -10,8 +10,10 @@ namespace Assets.Interactables
     {
         [SerializeField]
         private ItemData _itemData;
+        [SerializeField]
+        private InteractableObjectData _interactableData;
 
-        public override IInteractableObjectData InteractableData => throw new NotImplementedException();
+        public override IInteractableObjectData InteractableData => _interactableData;
 
         protected override void Awake()
         {

@@ -16,7 +16,7 @@ namespace Assets.Interactions
 
         public override void Perform(EntityController interactingEntity)
         {
-            var availableSpaces = interactingEntity.Inventory.GetInventorySpaces(x => x.HasEnoughSpace(_pickupable));
+            var availableSpaces = interactingEntity.Inventory.Where(x => x.HasEnoughSpace(_pickupable));
             if(availableSpaces.Any())
             {
                 //TODO: recode properly to go thorugh available spaces and select the best fitting one

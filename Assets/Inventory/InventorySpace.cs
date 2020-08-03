@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Interactables;
@@ -13,32 +14,20 @@ namespace Assets.Inventory
         public InventorySpace(string name, float capacity)
         {
             if(capacity <= 0.0f) { throw new ArgumentException($"{nameof(capacity)} must be positive"); }
-            if(name == null) {  throw new ArgumentNullException(nameof(name)); }
 
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             MaximumSpace = capacity;
             TakenSpace = 0.0f;
             _storedItems = new HashSet<IInteractable>();
         }
-        
+
+        public event EventHandler<IInteractable> ItemTakenOut;
+        public event EventHandler<IInteractable> ItemPutInside;
+
         public float MaximumSpace { get; protected set; }
         public float TakenSpace { get; protected set; }
         public float SpaceLeft => MaximumSpace - TakenSpace;
         public string Name { get; private set; }
-
-        public IEnumerable<IInteractable> GetAllItems()
-        {
-            var allItems = _storedItems.ToList();
-
-            return allItems;
-        }
-
-        public IEnumerable<IInteractable> FilterItems(Func<IInteractable, bool> predicate)
-        {
-            var  selectedItems = _storedItems.Where(predicate);
-
-            return selectedItems;
-        }
 
         public bool HasEnoughSpace(IInteractable item)
         {
@@ -49,6 +38,10 @@ namespace Assets.Inventory
         {
             var addedSuccessfully = _storedItems.Add(item);
             //TakenSpace += item.ItemData.Volume;
+            if(addedSuccessfully)
+            {
+                ItemPutInside?.Invoke(this, item);
+            }
 
             return addedSuccessfully;
         }
@@ -57,8 +50,23 @@ namespace Assets.Inventory
         {
             var removedSuccessfully = _storedItems.Remove(item);
             //TakenSpace -= item.ItemData.Volume;
+            if(removedSuccessfully)
+            {
+                ItemTakenOut?.Invoke(this, item);
+            }
 
             return removedSuccessfully;
+        }
+
+        public IEnumerator<IInteractable> GetEnumerator()
+        {
+            return _storedItems.GetEnumerator();
+        }
+
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

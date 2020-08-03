@@ -6,10 +6,11 @@ using Assets.Items;
 
 namespace Assets.Inventory
 {
-    public interface IInventorySpace : INamedObject
+    public interface IInventorySpace : INamedObject, IEnumerable<IInteractable>
     {
-        IEnumerable<IInteractable> GetAllItems();
-        IEnumerable<IInteractable> FilterItems(Func<IInteractable, bool> predicate);
+        event EventHandler<IInteractable> ItemTakenOut;
+        event EventHandler<IInteractable> ItemPutInside;
+
         bool HasEnoughSpace(IInteractable item);
         bool PutItemInside(IInteractable item);
         bool TakeItemOut(IInteractable item);

@@ -50,8 +50,8 @@ namespace Asset.OnlyHuman.Characters
         {
             _interactionQueue = new LinkedList<IInteraction>();
             var inventory = new Inventory(this);
-            inventory.Expand(this);
             Inventory = inventory;
+            inventory.Expand(GetInventorySpaces());
         }
 
         private void Start()
@@ -144,9 +144,9 @@ namespace Asset.OnlyHuman.Characters
             throw new NotImplementedException();
         }
 
-        public IInventorySpace GetInventorySpace()
+        public IEnumerable<IInventorySpace> GetInventorySpaces()
         {
-            return new InventorySpace(gameObject.name + "'s personal space" , float.MaxValue);
+            return new List<IInventorySpace> { new InventorySpace(gameObject.name + "'s personal space" , float.MaxValue) };
         }
     }
 }
