@@ -15,13 +15,13 @@ namespace Assets.UI
         [SerializeField]
         public InventoryItemButtonAddedEvent InventoryItemButtonAdded;
 
-        protected override Transform ContentsParent => _content.transform;
+        protected override Transform UIElementParent => _content.transform;
 
         private void Start()
         {
-            if(_contentElements.Any())
+            if(_uiElements.Any())
             {
-                foreach(var inventoryItemButton in _contentElements)
+                foreach(var inventoryItemButton in _uiElements)
                 {
                     InventoryItemButtonAdded?.Invoke(inventoryItemButton);
                 } 
@@ -30,36 +30,36 @@ namespace Assets.UI
 
         public void ResetDisplayedContents(IEnumerable<IInteractable> itemsToDisplay)
         {
-            if(itemsToDisplay.Count() > _contentElements.Count)
+            if(itemsToDisplay.Count() > _uiElements.Count)
             {
-                CreateMultipleUIContentElements(itemsToDisplay.Count() - _contentElements.Count);
+                CreateMultipleUIElements(itemsToDisplay.Count() - _uiElements.Count);
             }
 
             var itemsToDisplayIterator = itemsToDisplay.GetEnumerator();
-            foreach (var itemButton in _contentElements)
+            foreach (var itemButton in _uiElements)
             {
                 if (itemsToDisplayIterator.MoveNext())
                 {
-                    ResetContentElementButton(itemButton, itemsToDisplayIterator.Current);
+                    ResetUIElement(itemButton, itemsToDisplayIterator.Current);
                 }
                 else 
                 {
-                    ResetContentElementButton(itemButton, null);
+                    ResetUIElement(itemButton, null);
                 }
             }
-            _unusedElementsSubListIndex = itemsToDisplay.Count();
-            RepositionElements(Comparer<UIInventorySpaceContentsItem>.Default);
+            _unusedUIElementsSubListIndex = itemsToDisplay.Count();
+            RepositionUIElements(Comparer<UIInventorySpaceContentsItem>.Default);
         }
 
-        protected override void ResetContentElementButton(UIInventorySpaceContentsItem itemToggle, IInteractable interactable)
+        protected override void ResetUIElement(UIInventorySpaceContentsItem itemToggle, IInteractable interactable)
         {
             itemToggle.Toggled = false;
             itemToggle.Interactable = interactable;
         }
 
-        protected override UIInventorySpaceContentsItem GetUIContentElementWithContent(IInteractable interactable)
+        protected override UIInventorySpaceContentsItem GetUIElementWithContent(IInteractable interactable)
         {
-            return _contentElements.First(x => ReferenceEquals(x.Interactable, interactable));
+            return _uiElements.First(x => ReferenceEquals(x.Interactable, interactable));
         }
 
         protected override bool IsUIElementUnused(UIInventorySpaceContentsItem itemToggle)
@@ -67,9 +67,9 @@ namespace Assets.UI
             return itemToggle.Interactable == null;
         }
 
-        protected override UIInventorySpaceContentsItem CreateContentUIElement()
+        protected override UIInventorySpaceContentsItem CreateUIElement()
         {
-            var newItemButton = base.CreateContentUIElement();
+            var newItemButton = base.CreateUIElement();
             InventoryItemButtonAdded?.Invoke(newItemButton);
 
             return newItemButton;

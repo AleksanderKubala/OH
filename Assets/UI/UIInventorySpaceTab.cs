@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Assets.Interactables;
 using Assets.Inventory;
+using Assets.Inventory.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +14,8 @@ namespace Assets.UI
         private UIInventorySpaceContentsPanel _contentsPanel;
         [SerializeField]
         private Text _label;
-        private Toggle _toggle;
         private IInventorySpace _inventorySpace;
+        private bool _wasToggled;
 
         public IInventorySpace InventorySpaceToDisplay
         {
@@ -29,15 +31,12 @@ namespace Assets.UI
             }
         }
 
-        public bool Toggled
-        {
-            get => _toggle.isOn;
-            set => _toggle.isOn = value;
-        }
+        public Toggle Toggle { get; private set; }
 
         private void Awake()
         {
-            _toggle = GetComponent<Toggle>();
+            Toggle = GetComponent<Toggle>();
+            _wasToggled = Toggle.isOn;
         }
 
         private void Start()
@@ -47,20 +46,33 @@ namespace Assets.UI
 
         public void OnInventorySpaceTabSelected(bool isToggled)
         {
-            if(isToggled)
+            if(isToggled && !_wasToggled)
             {
                 _contentsPanel.ResetDisplayedContents(_inventorySpace);
+                Toggle.targetGraphic.color = Color.yellow;
+                _wasToggled = true;
+            }
+            else if(!isToggled && _wasToggled)
+            {
+                Toggle.targetGraphic.color = Color.white;
+                _wasToggled = false;
             }
         }
 
-        public void OnItemWithdrawn(object sender, IInteractable item)
+        public void OnItemWithdrawn(object sender, ItemAddedRemovedEventArgs args)
         {
-            _contentsPanel.RemoveContentFromUIElement(item);
+            if(ReferenceEquals(args.InventorySpace, _inventorySpace) && _wasToggled)
+            {
+                _contentsPanel.RemoveContentFromUIElement(args.Interactable);
+            }
         }
 
-        public void OnItemStored(object sender, IInteractable item)
+        public void OnItemStored(object sender, ItemAddedRemovedEventArgs args)
         {
-            _contentsPanel.AppendUIContentElement(item);
+            if (ReferenceEquals(args.InventorySpace, _inventorySpace) && _wasToggled)
+            {
+                _contentsPanel.SetContentInUIElement(args.Interactable);
+            }
         }
 
         private void SetUpInventorySpaceReference(IInventorySpace space)

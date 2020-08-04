@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Interactions;
+using Assets.UI.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,9 @@ namespace Assets.UI
         private int interactablesSupportingInteraction;
         private int interactablesWithEffectiveInteraction;
 
+        [HideInInspector]
+        public InventoryInteractionSelectedEvent InteractionSelected;
+
         public Interaction Interaction
         {
             get
@@ -26,7 +30,6 @@ namespace Assets.UI
                 _interaction = value;
                 interactablesSupportingInteraction = 0;
                 interactablesWithEffectiveInteraction = 0;
-                gameObject.SetActive(_interaction != null);
                 SetLabel();
             }
         }
@@ -36,9 +39,17 @@ namespace Assets.UI
         private void Awake()
         {
             Interaction = _interaction;
+            UpdateGameObjectActiveFlag();
         }
 
-        public void SupportInteraction(HashSet<Interaction> interactions)
+        public void OnInteractionButtonClicked()
+        {
+            InteractionSelected?.Invoke(new InventoryInteractionSelectedEventArgs() {
+                Interaction = _interaction 
+                }); 
+        }
+
+        public void SupportInteraction(IEnumerable<Interaction> interactions)
         {
             if (interactions.Contains(_interaction))
             {
@@ -48,10 +59,11 @@ namespace Assets.UI
                 {
                     interactablesWithEffectiveInteraction++;
                 }
+                UpdateGameObjectActiveFlag();
             }
         }
 
-        public void WithdrawInteractionSupport(HashSet<Interaction> interactions)
+        public void WithdrawInteractionSupport(IEnumerable<Interaction> interactions)
         {
             if(interactions.Contains(_interaction))
             {
@@ -67,12 +79,25 @@ namespace Assets.UI
                 {
                     Interaction = null;
                 }
+                UpdateGameObjectActiveFlag();
+            }
+        }
+
+        private void UpdateGameObjectActiveFlag()
+        {
+            if(_interaction != null && interactablesWithEffectiveInteraction > 0)
+            {
+                gameObject.SetActive(true);
+            }
+            else
+            {
+                gameObject.SetActive(false);
             }
         }
 
         private void SetLabel()
         {
-            if(_interaction != null)
+            if (_interaction != null)
             {
                 _label.text = _interaction.Name ?? "null";
             }

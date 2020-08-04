@@ -26,5 +26,10 @@ namespace Assets.Interactions
                 _pickupable.gameObject.SetActive(true);
             }
         }
+
+        public override Transform GetInteractionSource()
+        {
+            return null;
+        }
     }
 }

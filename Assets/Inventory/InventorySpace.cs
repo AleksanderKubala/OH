@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Interactables;
+using Assets.Inventory.Events;
 using Assets.Items;
 
 namespace Assets.Inventory
@@ -21,8 +22,8 @@ namespace Assets.Inventory
             _storedItems = new HashSet<IInteractable>();
         }
 
-        public event EventHandler<IInteractable> ItemTakenOut;
-        public event EventHandler<IInteractable> ItemPutInside;
+        public event EventHandler<ItemAddedRemovedEventArgs> ItemTakenOut;
+        public event EventHandler<ItemAddedRemovedEventArgs> ItemPutInside;
 
         public float MaximumSpace { get; protected set; }
         public float TakenSpace { get; protected set; }
@@ -40,7 +41,7 @@ namespace Assets.Inventory
             //TakenSpace += item.ItemData.Volume;
             if(addedSuccessfully)
             {
-                ItemPutInside?.Invoke(this, item);
+                ItemPutInside?.Invoke(this, new ItemAddedRemovedEventArgs(this, item));
             }
 
             return addedSuccessfully;
@@ -52,7 +53,7 @@ namespace Assets.Inventory
             //TakenSpace -= item.ItemData.Volume;
             if(removedSuccessfully)
             {
-                ItemTakenOut?.Invoke(this, item);
+                ItemTakenOut?.Invoke(this, new ItemAddedRemovedEventArgs(this, item));
             }
 
             return removedSuccessfully;

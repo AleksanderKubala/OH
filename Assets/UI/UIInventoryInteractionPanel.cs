@@ -2,7 +2,10 @@
 using System.Linq;
 using Assets.Interactables;
 using Assets.Interactions;
+using Assets.Managers;
+using Assets.UI.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.UI
 {
@@ -11,47 +14,56 @@ namespace Assets.UI
     {
         private LinkedList<IInteractable> _toggledInventoryItems;
 
-        protected override Transform ContentsParent => transform; 
+        protected override Transform UIElementParent => transform; 
 
         protected void Awake()
         {
             _toggledInventoryItems = new LinkedList<IInteractable>();
         }
 
+        private void Start()
+        {
+            foreach(var interactionButton in _uiElements)
+            {
+                interactionButton.InteractionSelected.AddListener(OnInteractionSelected);
+            }
+        }
+
         public void OnInventoryItemDeselected(IInteractable interactable)
         {
-            HashSet<Interaction> interactionsSet = interactable.Interactions;
+            InteractionSet interactionsSet = interactable.Interactions;
             _toggledInventoryItems.Remove(interactable);
 
-            for(int i = 0; i < _unusedElementsSubListIndex; i++)
+            for(int i = 0; i < _unusedUIElementsSubListIndex; i++)
             {
-                _contentElements[i].WithdrawInteractionSupport(interactionsSet);
-                if(_contentElements[i].InteractionIsSupported == false)
+                _uiElements[i].WithdrawInteractionSupport(interactionsSet);
+                if(_uiElements[i].InteractionIsSupported == false)
                 {
-                    ResetContentElementButton(_contentElements[i], null);
+                    ResetUIElement(_uiElements[i], null);
                 }
             }
-            RepositionElements(Comparer<UIInventoryInteractionButton>.Default);
-            _unusedElementsSubListIndex = _contentElements.FindIndex(x => x.Interaction == null);
+            RepositionUIElements(Comparer<UIInventoryInteractionButton>.Default);
+            _unusedUIElementsSubListIndex = _uiElements.FindIndex(x => x.Interaction == null);
         }
 
         public void OnInventoryItemSelected(IInteractable interactable)
         {
-            HashSet<Interaction> interactionsSet = interactable.Interactions;
+            InteractionSet interactionsSet = interactable.Interactions;
             _toggledInventoryItems.AddLast(interactable);
-            if (_contentElements.Count < interactionsSet.Count)
-            {
-                CreateMultipleUIContentElements(interactionsSet.Count - _contentElements.Count);
-            }
-            var newInteractions = interactionsSet.Except(_contentElements.GetRange(0, _unusedElementsSubListIndex).Select(x => x.Interaction));
+            var newInteractions = interactionsSet.Except(_uiElements.GetRange(0, _unusedUIElementsSubListIndex).Select(x => x.Interaction));
             if (newInteractions.Any())
             {
-                AppendUIContentElement(newInteractions);
+                var newUIElementsCount = newInteractions.Count() - UnusedUIElementsCount;
+                if (newUIElementsCount > 0)
+                {
+                    CreateMultipleUIElements(newUIElementsCount);
+                }
+                SetContentInUIElement(newInteractions);
             }
 
-            _contentElements.ForEach(x => x.SupportInteraction(interactionsSet));
-            RepositionElements(Comparer<UIInventoryInteractionButton>.Default);
-            _unusedElementsSubListIndex = _contentElements.FindIndex(x => x.Interaction == null);
+            _uiElements.ForEach(x => x.SupportInteraction(interactionsSet));
+            RepositionUIElements(Comparer<UIInventoryInteractionButton>.Default);
+            _unusedUIElementsSubListIndex = _uiElements.FindIndex(x => x.Interaction == null);
         }
 
         public void OnInventoryItemButtonAdded(UIInventorySpaceContentsItem itemToggleButton)
@@ -60,19 +72,36 @@ namespace Assets.UI
             itemToggleButton.InventoryItemDeselected.AddListener(OnInventoryItemDeselected);
         }
 
-        protected override void ResetContentElementButton(UIInventoryInteractionButton interactionButton, Interaction interaction)
+        public void OnInteractionSelected(InventoryInteractionSelectedEventArgs args)
+        {
+            foreach(var interactable in _toggledInventoryItems)
+            {
+                GameManager.Player.AddInteractionToPerform(interactable.Interactions.First(x => x.Equals(args.Interaction)));
+            }
+
+        }
+
+        protected override void ResetUIElement(UIInventoryInteractionButton interactionButton, Interaction interaction)
         {
             interactionButton.Interaction = interaction;
         }
 
-        protected override UIInventoryInteractionButton GetUIContentElementWithContent(Interaction interaction)
+        protected override UIInventoryInteractionButton GetUIElementWithContent(Interaction interaction)
         {
-            return _contentElements.First(x => x.Interaction.Equals(interaction));
+            return _uiElements.First(x => x.Interaction.Equals(interaction));
         }
 
         protected override bool IsUIElementUnused(UIInventoryInteractionButton uiElement)
         {
             return uiElement.Interaction == null;
+        }
+
+        protected override UIInventoryInteractionButton CreateUIElement()
+        {
+            var newButton =  base.CreateUIElement();
+            newButton.InteractionSelected.AddListener(OnInteractionSelected);
+
+            return newButton;
         }
     }
 }

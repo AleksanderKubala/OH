@@ -27,7 +27,6 @@ namespace Assets.Interactions
 
         public int ContextMenuPriority => _contextMenuPriority;
         public string ContextActionTitle => _interactionName;
-        public Transform InteractionSource => AssociatedInteractable.transform;
         public bool ShowInContextMenu => IsEffective;
         public string Name => _interactionName;
         public bool IsEffective { get; protected set; }
@@ -74,7 +73,7 @@ namespace Assets.Interactions
             IsEffective = enablingStateSet.IsFulfilled(AssociatedInteractable.CurrentState);
         }
 
-
+        public abstract Transform GetInteractionSource();
         public abstract void Perform(EntityController interactingEntity);
     }
 }

@@ -36,5 +36,10 @@ namespace Assets.Interactions
                 _openable.AddState(_targetState);
             }
         }
+
+        public override Transform GetInteractionSource()
+        {
+            return _openable.transform;
+        }
     }
 }

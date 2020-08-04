@@ -152,6 +152,7 @@
     <Compile Include="Assets\Interactions\InteractionOpen.cs" />
     <Compile Include="Assets\Interactions\InteractionPutIntoInventory.cs" />
     <Compile Include="Assets\Interactions\InteractionSet.cs" />
+    <Compile Include="Assets\Inventory\Events\ItemAddedRemovedEventArgs.cs" />
     <Compile Include="Assets\Inventory\IInventory.cs" />
     <Compile Include="Assets\Inventory\IInventoryExpansionSubscriber.cs" />
     <Compile Include="Assets\Inventory\IInventoryShrinkageSubscriber.cs" />
@@ -191,6 +192,8 @@
     <Compile Include="Assets\UI\ContextMenuHandler.cs" />
     <Compile Include="Assets\UI\Events\ContextActionSelectedEvent.cs" />
     <Compile Include="Assets\UI\Events\ContextMenuCalledEvent.cs" />
+    <Compile Include="Assets\UI\Events\InventoryInteractionSelectedEvent.cs" />
+    <Compile Include="Assets\UI\Events\InventoryInteractionSelectedEventArgs.cs" />
     <Compile Include="Assets\UI\Events\InventoryItemButtonAddedEvent.cs" />
     <Compile Include="Assets\UI\Events\InventoryItemEvent.cs" />
     <Compile Include="Assets\UI\Events\TooltipDisplayedEvent.cs" />

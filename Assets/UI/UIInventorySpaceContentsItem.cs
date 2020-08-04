@@ -62,10 +62,12 @@ namespace Assets.UI
             if(value)
             {
                 InventoryItemSelected?.Invoke(_interactableObject);
+                _toggle.targetGraphic.color = Color.yellow;
             }
             else
             {
                 InventoryItemDeselected?.Invoke(_interactableObject);
+                _toggle.targetGraphic.color = Color.white;
             }
         }
 

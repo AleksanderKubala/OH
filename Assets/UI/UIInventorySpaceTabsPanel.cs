@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Inventory;
 using Assets.Managers;
+using Assets.UI.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.UI
 {
@@ -11,8 +13,14 @@ namespace Assets.UI
     public class UIInventorySpaceTabsPanel : UIDynamicContentPanel<IInventorySpace, UIInventorySpaceTab>, IInventoryExpansionSubscriber, IInventoryShrinkageSubscriber
     {
         private IInventory _displayedInventory;
+        private ToggleGroup _toggleGroup;
 
-        protected override Transform ContentsParent => transform;
+        protected override Transform UIElementParent => transform;
+
+        private void Awake()
+        {
+            _toggleGroup = GetComponent<ToggleGroup>();
+        }
 
         private void Start()
         {
@@ -22,24 +30,28 @@ namespace Assets.UI
         public void ResetDisplayedContents(IInventory inventory)
         {
             SetUpInventoryReference(inventory);
-            if (inventory.Count() > _contentElements.Count)
+            if (inventory.Count() > _uiElements.Count)
             {
-                CreateMultipleUIContentElements(inventory.Count() - _contentElements.Count);
+                CreateMultipleUIElements(inventory.Count() - _uiElements.Count);
             }
 
             var itemsToDisplayIterator = inventory.GetEnumerator();
-            for (int i = 0; i < _contentElements.Count; i++)
+            for (int i = 0; i < _uiElements.Count; i++)
             {
                 if (itemsToDisplayIterator.MoveNext())
                 {
-                    ResetContentElementButton(_contentElements[i], itemsToDisplayIterator.Current);
+                    ResetUIElement(_uiElements[i], itemsToDisplayIterator.Current);
+                    if(i == 0)
+                    {
+                        _uiElements[i].Toggle.isOn = true;
+                    }
                 }
                 else
                 {
-                    ResetContentElementButton(_contentElements[i], null);
+                    ResetUIElement(_uiElements[i], null);
                 }
             }
-            RepositionElements(Comparer<UIInventorySpaceTab>.Default);
+            RepositionUIElements(Comparer<UIInventorySpaceTab>.Default);
         }
 
         private void SetUpInventoryReference(IInventory inventory)
@@ -60,29 +72,38 @@ namespace Assets.UI
         public void OnInventoryShrank(object sender, IInventorySpace removedSpace)
         {
             RemoveContentFromUIElement(removedSpace);
-            RepositionElements(Comparer<UIInventorySpaceTab>.Default);
+            RepositionUIElements(Comparer<UIInventorySpaceTab>.Default);
         }
 
         public void OnInventoryExpanded(object sender, IInventorySpace newInventorySpace)
         {
-            AppendUIContentElement(newInventorySpace);
-            RepositionElements(Comparer<UIInventorySpaceTab>.Default);
+            SetContentInUIElement(newInventorySpace);
+            RepositionUIElements(Comparer<UIInventorySpaceTab>.Default);
         }
 
-        protected override void ResetContentElementButton(UIInventorySpaceTab spaceTab, IInventorySpace inventorySpace)
+        protected override void ResetUIElement(UIInventorySpaceTab spaceTab, IInventorySpace inventorySpace)
         {
-            spaceTab.Toggled = false;
+            spaceTab.Toggle.isOn = false;
             spaceTab.InventorySpaceToDisplay = inventorySpace;
         }
 
-        protected override UIInventorySpaceTab GetUIContentElementWithContent(IInventorySpace inventorySpace)
+        protected override UIInventorySpaceTab GetUIElementWithContent(IInventorySpace inventorySpace)
         {
-            return _contentElements.First(x => ReferenceEquals(x.InventorySpaceToDisplay, inventorySpace));
+            return _uiElements.First(x => ReferenceEquals(x.InventorySpaceToDisplay, inventorySpace));
         }
 
         protected override bool IsUIElementUnused(UIInventorySpaceTab spaceTab)
         {
             return spaceTab.InventorySpaceToDisplay == null;
+        }
+
+        protected override UIInventorySpaceTab CreateUIElement()
+        {
+            var newTab = base.CreateUIElement();
+            newTab.Toggle.group = _toggleGroup;
+            _toggleGroup.RegisterToggle(newTab.Toggle);
+
+            return newTab;
         }
     }
 }

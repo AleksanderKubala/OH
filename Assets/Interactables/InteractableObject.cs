@@ -15,7 +15,7 @@ namespace Assets.Interactables
         [SerializeField]
         private List<InteractableState> _initialStates;
         [SerializeField]
-        private GameObject _interactions;
+        private InteractionSet _interactions;
         private HashSet<InteractableState> _internalStateSet;
 
         [HideInInspector]
@@ -24,7 +24,7 @@ namespace Assets.Interactables
         //TODO: consider refactoring InteractableStateSet class to use it here
         public HashSet<InteractableState> CurrentState => new HashSet<InteractableState>(_internalStateSet);
         public abstract IInteractableObjectData InteractableData { get; }
-        public HashSet<Interaction> Interactions => new HashSet<Interaction>(_interactions.GetComponents<Interaction>());
+        public InteractionSet Interactions => _interactions;
         public string Name => InteractableData.Name;
 
         protected virtual void Awake()

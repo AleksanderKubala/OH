@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Assets.UI
 {
@@ -10,18 +10,18 @@ namespace Assets.UI
         [SerializeField]
         private GameObject _uiElementPrefab;
         [SerializeField]
-        protected List<TUIWithContent> _contentElements;
-        protected int _unusedElementsSubListIndex;
+        protected List<TUIWithContent> _uiElements;
+        protected int _unusedUIElementsSubListIndex;
 
-        protected int UnusedElementsCount => _contentElements.Count - _unusedElementsSubListIndex;
-        protected abstract Transform ContentsParent { get; }
+        protected int UnusedUIElementsCount => _uiElements.Count - _unusedUIElementsSubListIndex;
+        protected abstract Transform UIElementParent { get; }
 
         public void RemoveContentFromUIElement(TContent content)
         {
-            var referencingButton = GetUIContentElementWithContent(content);
+            var referencingButton = GetUIElementWithContent(content);
             if (referencingButton != null)
             {
-                ResetContentElementButton(referencingButton, default);
+                ResetUIElement(referencingButton, default);
             }
         }
 
@@ -33,57 +33,59 @@ namespace Assets.UI
             }
         }
 
-        public void AppendUIContentElement(TContent content)
+        public void SetContentInUIElement(TContent content)
         {
-            if (_unusedElementsSubListIndex == _contentElements.Count)
+            if (_unusedUIElementsSubListIndex == _uiElements.Count)
             {
-                CreateMultipleUIContentElements(1);
+                CreateMultipleUIElements(1);
             }
 
-            ResetContentElementButton(_contentElements[_unusedElementsSubListIndex], content);
-            _unusedElementsSubListIndex++;
+            ResetUIElement(_uiElements[_unusedUIElementsSubListIndex], content);
+            _unusedUIElementsSubListIndex++;
         }
 
-        public void AppendUIContentElement(IEnumerable<TContent> contentCollection)
+        public void SetContentInUIElement(IEnumerable<TContent> contentCollection)
         {
-            if (UnusedElementsCount < contentCollection.Count())
+            if (UnusedUIElementsCount < contentCollection.Count())
             {
-                CreateMultipleUIContentElements(contentCollection.Count() - UnusedElementsCount);
+                CreateMultipleUIElements(contentCollection.Count() - UnusedUIElementsCount);
             }
 
             foreach (var content in contentCollection)
             {
-                ResetContentElementButton(_contentElements[_unusedElementsSubListIndex], content);
-                _unusedElementsSubListIndex++;
+                ResetUIElement(_uiElements[_unusedUIElementsSubListIndex], content);
+                _unusedUIElementsSubListIndex++;
             }
         }
 
-        protected void CreateMultipleUIContentElements(int count)
+        protected void CreateMultipleUIElements(int count)
         {
+            if(count <= 0) { throw new ArgumentException(nameof(count) + "should be positive" ); }
+
             for (int i = 0; i < count; i++)
             {
-                _contentElements.Add(CreateContentUIElement());
+                _uiElements.Add(CreateUIElement());
             }
         }
 
-        protected virtual TUIWithContent CreateContentUIElement()
+        protected virtual TUIWithContent CreateUIElement()
         {
-            var newUIElement = Instantiate(_uiElementPrefab, Vector3.zero, Quaternion.identity, ContentsParent).GetComponent<TUIWithContent>();
+            var newUIElement = Instantiate(_uiElementPrefab, Vector3.zero, Quaternion.identity, UIElementParent).GetComponent<TUIWithContent>();
 
             return newUIElement;
         }
 
-        protected void RepositionElements(IComparer<TUIWithContent> comparer)
+        protected void RepositionUIElements(IComparer<TUIWithContent> comparer)
         {
-            _contentElements.Sort(comparer);
-            for(int i = 0; i < _contentElements.Count; i++)
+            _uiElements.Sort(comparer);
+            for(int i = 0; i < _uiElements.Count; i++)
             {
-                _contentElements[i].transform.SetSiblingIndex(i);
+                _uiElements[i].transform.SetSiblingIndex(i);
             }
         }
 
-        protected abstract void ResetContentElementButton(TUIWithContent uiElement, TContent content);
-        protected abstract TUIWithContent GetUIContentElementWithContent(TContent content);
+        protected abstract void ResetUIElement(TUIWithContent uiElement, TContent content);
+        protected abstract TUIWithContent GetUIElementWithContent(TContent content);
         protected abstract bool IsUIElementUnused(TUIWithContent uiElement);
     }
 }

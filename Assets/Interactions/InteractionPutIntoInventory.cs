@@ -28,5 +28,10 @@ namespace Assets.Interactions
                 }
             }
         }
+
+        public override Transform GetInteractionSource()
+        {
+            return _pickupable.transform;
+        }
     }
 }

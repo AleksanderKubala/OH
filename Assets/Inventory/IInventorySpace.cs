@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using Assets.Common;
 using Assets.Interactables;
+using Assets.Inventory.Events;
 using Assets.Items;
 
 namespace Assets.Inventory
 {
     public interface IInventorySpace : INamedObject, IEnumerable<IInteractable>
     {
-        event EventHandler<IInteractable> ItemTakenOut;
-        event EventHandler<IInteractable> ItemPutInside;
+        event EventHandler<ItemAddedRemovedEventArgs> ItemTakenOut;
+        event EventHandler<ItemAddedRemovedEventArgs> ItemPutInside;
 
         bool HasEnoughSpace(IInteractable item);
         bool PutItemInside(IInteractable item);
