@@ -15,7 +15,7 @@ namespace Assets.Body
         {
             _equipmentSlots = itemSlots ?? throw new ArgumentNullException(nameof(itemSlots));
             BodypartData = bodypartData ?? throw new ArgumentNullException(nameof(bodypartData));
-            if(bodypartData.BodypartType == BodypartTypes.None) { throw new ArgumentException($"Bodypart cannot be type {BodypartTypes.None.Name}"); }
+            //if(bodypartData.BodypartType == BodypartTypes.None) { throw new ArgumentException($"Bodypart cannot be type {BodypartTypes.None.Name}"); }
 
             Health = BodypartData.MaximumHealth;
         }

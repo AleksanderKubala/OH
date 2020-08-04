@@ -12,22 +12,26 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _targetState;
 
-        public override Transform InteractionSource => _pickupable.transform;
         protected override InteractableObject AssociatedInteractable => _pickupable;
 
         public override void Perform(EntityController interactingEntity)
         {
-            var availableSpaces = interactingEntity.Inventory.GetInventorySpaces(x => x.HasEnoughSpace(_pickupable.Item));
+            var availableSpaces = interactingEntity.Inventory.Where(x => x.HasEnoughSpace(_pickupable));
             if(availableSpaces.Any())
             {
                 //TODO: recode properly to go thorugh available spaces and select the best fitting one
-                var isPlacedInInventory = availableSpaces.First().PutItemInside(_pickupable.Item);
+                var isPlacedInInventory = availableSpaces.First().PutItemInside(_pickupable);
                 if(isPlacedInInventory)
                 {
                     _pickupable.AddState(_targetState);
                     _pickupable.gameObject.SetActive(false);
                 }
             }
+        }
+
+        public override Transform GetInteractionSource()
+        {
+            return _pickupable.transform;
         }
     }
 }

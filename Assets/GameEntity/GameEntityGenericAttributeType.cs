@@ -4,9 +4,7 @@ namespace Assets.GameEntity
 {
     public class GameEntityGenericAttributeType<TValue> : GameEntityAttributeType, IEquatable<GameEntityGenericAttributeType<TValue>> where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     {
-        public GameEntityGenericAttributeType(string name, string description) : base(name, description) { }
-
-        public GameEntityGenericAttributeType(string name) : base(name, name) { }
+        public GameEntityGenericAttributeType(string name) : base(name) { }
 
         public bool Equals(GameEntityGenericAttributeType<TValue> other)
         {

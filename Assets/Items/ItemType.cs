@@ -1,32 +1,38 @@
 ﻿using System.Collections.Generic;
+using System.Transactions;
 using Assets.Common;
 
 namespace Assets.Items
 {
-    public class ItemType : DescribableObject, IType<ItemType>
+    public class ItemType : GameObjectType, INamedObject, IType<ItemType>
     {
-        public ItemType(string name, string description, HashSet<ItemType> itemSupertypes) : base(name, description)
+        public ItemType(string name, string description, HashSet<ItemType> itemSupertypes)
         {
-            if(itemSupertypes == null)
+            if (itemSupertypes == null)
             {
                 itemSupertypes = new HashSet<ItemType>();
             }
 
-            LinkToParents(this, itemSupertypes);
+            //LinkToParents(this, itemSupertypes);
         }
 
-        public bool BelongsToType(ItemType itemType)
+        public bool BelongsToType(ItemType type)
         {
-            var belongsToGroup = this.Equals(itemType) || groupingDictionary[this].Contains(itemType);
-
-            return belongsToGroup;
+            return base.BelongsToType(type);
         }
+
+        //public bool BelongsToType(ItemType itemType)
+        //{
+        //    var belongsToGroup = this.Equals(itemType) || GameObjectType.groupingDictionary[this].Contains(itemType);
+
+        //    return belongsToGroup;
+        //}
 
         public bool Equals(ItemType other)
         {
-            if(other != null)
+            if (other != null)
             {
-                if(ReferenceEquals(this, other) || (Name == other.Name))
+                if (ReferenceEquals(this, other) || (Name == other.Name))
                 {
                     return true;
                 }
@@ -47,48 +53,48 @@ namespace Assets.Items
             return Name.GetHashCode();
         }
 
-        #region Static
+        //#region Static
 
-        private static readonly Dictionary<ItemType, HashSet<ItemType>> groupingDictionary;
+        //private static readonly Dictionary<ItemType, HashSet<ItemType>> groupingDictionary;
 
-        static ItemType()
-        {
-            groupingDictionary = new Dictionary<ItemType, HashSet<ItemType>>();
-        }
+        //static ItemType()
+        //{
+        //    groupingDictionary = new Dictionary<ItemType, HashSet<ItemType>>();
+        //}
 
-        public static LinkedList<ItemType> FindGroupCycles()
-        {
-            var groupingsWithCycle = new LinkedList<ItemType>();
+        //public static LinkedList<ItemType> FindGroupCycles()
+        //{
+        //    var groupingsWithCycle = new LinkedList<ItemType>();
 
-            foreach (var groupAndParents in groupingDictionary)
-            {
-                if (groupAndParents.Value.Contains(groupAndParents.Key))
-                {
-                    groupingsWithCycle.AddLast(groupAndParents.Key);
-                }
-            }
+        //    foreach (var groupAndParents in groupingDictionary)
+        //    {
+        //        if (groupAndParents.Value.Contains(groupAndParents.Key))
+        //        {
+        //            groupingsWithCycle.AddLast(groupAndParents.Key);
+        //        }
+        //    }
 
-            return groupingsWithCycle;
-        }
+        //    return groupingsWithCycle;
+        //}
 
-        private static void LinkToParents(ItemType group, HashSet<ItemType> parentGroups)
-        {
-            if (!groupingDictionary.TryGetValue(group, out var newGroupParents))
-            {
-                newGroupParents = new HashSet<ItemType>();
-            }
+        //private static void LinkToParents(ItemType group, HashSet<ItemType> parentGroups)
+        //{
+        //    if (!groupingDictionary.TryGetValue(group, out var newGroupParents))
+        //    {
+        //        newGroupParents = new HashSet<ItemType>();
+        //    }
 
-            newGroupParents.UnionWith(parentGroups);
+        //    newGroupParents.UnionWith(parentGroups);
 
-            foreach (var parentGroup in parentGroups)
-            {
-                if (groupingDictionary.TryGetValue(parentGroup, out var iteratedParents))
-                {
-                    newGroupParents.UnionWith(iteratedParents);
-                }
-            }
-        }
+        //    foreach (var parentGroup in parentGroups)
+        //    {
+        //        if (groupingDictionary.TryGetValue(parentGroup, out var iteratedParents))
+        //        {
+        //            newGroupParents.UnionWith(iteratedParents);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }

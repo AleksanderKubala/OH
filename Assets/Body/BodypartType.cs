@@ -4,25 +4,30 @@ using Assets.Common;
 
 namespace Assets.Body
 {
-    public class BodypartType : DescribableObject, IType<BodypartType>
+    public class BodypartType : GameObjectType, INamedObject, IType<BodypartType>
     {
-        public BodypartType(string name, string description, HashSet<BodypartType> bodypartSupertypes) : base(name, description)
+        //public BodypartType(string name, string description, HashSet<BodypartType> bodypartSupertypes)
+        //{
+        //    if(bodypartSupertypes == null)
+        //    {
+        //        bodypartSupertypes = new HashSet<BodypartType>();
+        //    }
+
+        //    //LinkToParents(this, bodypartSupertypes);
+        //}
+
+        //public BodypartType(string name, string description) : this(name, description, new HashSet<BodypartType>()) { }
+
+        //public bool BelongsToType(BodypartType bodypartType)
+        //{
+        //    var belongsToType = this.Equals(bodypartType) || BodypartType.groupingDictionary[this].Contains(bodypartType);
+
+        //    return belongsToType;
+        //}
+
+        public bool BelongsToType(BodypartType type)
         {
-            if(bodypartSupertypes == null)
-            {
-                bodypartSupertypes = new HashSet<BodypartType>();
-            }
-
-            LinkToParents(this, bodypartSupertypes);
-        }
-
-        public BodypartType(string name, string description) : this(name, description, new HashSet<BodypartType>()) { }
-
-        public bool BelongsToType(BodypartType bodypartType)
-        {
-            var belongsToType = this.Equals(bodypartType) || BodypartType.groupingDictionary[this].Contains(bodypartType);
-
-            return belongsToType;
+            return base.BelongsToType(type);
         }
 
         public bool Equals(BodypartType other)
@@ -50,50 +55,50 @@ namespace Assets.Body
             return Name.GetHashCode();
         }
 
-        #region Static
+        //#region Static
 
-        private static readonly Dictionary<BodypartType, HashSet<BodypartType>> groupingDictionary;
+        //private static readonly Dictionary<BodypartType, HashSet<BodypartType>> groupingDictionary;
 
-        static BodypartType()
-        {
-            groupingDictionary = new Dictionary<BodypartType, HashSet<BodypartType>>();
-        }
+        //static BodypartType()
+        //{
+        //    groupingDictionary = new Dictionary<BodypartType, HashSet<BodypartType>>();
+        //}
 
-        public static LinkedList<BodypartType> FindGroupCycles()
-        {
-            var groupingsWithCycle = new LinkedList<BodypartType>();
+        //public static LinkedList<BodypartType> FindGroupCycles()
+        //{
+        //    var groupingsWithCycle = new LinkedList<BodypartType>();
 
-            foreach (var groupAndParents in groupingDictionary)
-            {
-                if (groupAndParents.Value.Contains(groupAndParents.Key))
-                {
-                    groupingsWithCycle.AddLast(groupAndParents.Key);
-                }
-            }
+        //    foreach (var groupAndParents in groupingDictionary)
+        //    {
+        //        if (groupAndParents.Value.Contains(groupAndParents.Key))
+        //        {
+        //            groupingsWithCycle.AddLast(groupAndParents.Key);
+        //        }
+        //    }
 
-            return groupingsWithCycle;
-        }
+        //    return groupingsWithCycle;
+        //}
 
-        private static void LinkToParents(BodypartType linkedType, HashSet<BodypartType> supertypes)
-        {
-            if(linkedType == BodypartTypes.None || supertypes.Contains(BodypartTypes.None)) { throw new ArgumentException($"Bodypart type {BodypartTypes.None.Name} cannot be assigned neither as supertype nor subtype"); }
+        //private static void LinkToParents(BodypartType linkedType, HashSet<BodypartType> supertypes)
+        //{
+        //    if(linkedType == BodypartTypes.None || supertypes.Contains(BodypartTypes.None)) { throw new ArgumentException($"Bodypart type {BodypartTypes.None.Name} cannot be assigned neither as supertype nor subtype"); }
 
-            if (!groupingDictionary.TryGetValue(linkedType, out var newGroupParents))
-            {
-                newGroupParents = new HashSet<BodypartType>();
-            }
+        //    if (!groupingDictionary.TryGetValue(linkedType, out var newGroupParents))
+        //    {
+        //        newGroupParents = new HashSet<BodypartType>();
+        //    }
 
-            newGroupParents.UnionWith(supertypes);
+        //    newGroupParents.UnionWith(supertypes);
 
-            foreach (var parentGroup in supertypes)
-            {
-                if (groupingDictionary.TryGetValue(parentGroup, out var iteratedParents))
-                {
-                    newGroupParents.UnionWith(iteratedParents);
-                }
-            }
-        }
+        //    foreach (var parentGroup in supertypes)
+        //    {
+        //        if (groupingDictionary.TryGetValue(parentGroup, out var iteratedParents))
+        //        {
+        //            newGroupParents.UnionWith(iteratedParents);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }

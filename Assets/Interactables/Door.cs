@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Data;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Assets.Interactables
@@ -15,6 +16,8 @@ namespace Assets.Interactables
         private float _maxOpenDoorAngle;
         [SerializeField]
         private float _maxClosedDoorAngle;
+
+        public override IInteractableObjectData InteractableData => throw new System.NotImplementedException();
 
         protected override void Awake()
         {

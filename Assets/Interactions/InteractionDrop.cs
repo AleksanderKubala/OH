@@ -13,19 +13,23 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _removedState;
 
-        public override Transform InteractionSource => _pickupable.transform;
         protected override InteractableObject AssociatedInteractable => _pickupable;
 
         public override void Perform(EntityController interactingEntity)
         {
-            var successfullyDropped = interactingEntity.Inventory.RemoveItem(_pickupable.Item);
+            var successfullyDropped = interactingEntity.Inventory.RemoveItem(_pickupable);
             if(successfullyDropped)
             {
-                //TODO: implement someway to determine where gameObject can be dropped considering obstacles in vicinity of entity
+                //TODO: implement some way to determine where gameObject can be dropped considering obstacles in vicinity of entity
                 _pickupable.transform.position = interactingEntity.transform.position + interactingEntity.transform.forward;
                 _pickupable.RemoveState(_removedState);
                 _pickupable.gameObject.SetActive(true);
             }
+        }
+
+        public override Transform GetInteractionSource()
+        {
+            return null;
         }
     }
 }

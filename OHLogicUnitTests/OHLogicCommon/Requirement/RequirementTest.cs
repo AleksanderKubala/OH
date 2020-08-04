@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OHLogic.Common;
-using OHLogic.Common.Requirement;
 using OHLogicUnitTests.OHLogicCommon.Requirement;
 
 namespace OHLogicUnitTests.Requirement

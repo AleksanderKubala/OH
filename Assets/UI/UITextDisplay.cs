@@ -7,7 +7,7 @@ namespace Assets.UI
         [SerializeField]
         private string _displayedText;
 
-        private UIText _uiText;
+        private UITextField _uiText;
 
 
         public void AcquireTextElement()

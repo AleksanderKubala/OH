@@ -10,18 +10,14 @@ namespace Assets.Interactables
     {
         [SerializeField]
         private ItemData _itemData;
+        [SerializeField]
+        private InteractableObjectData _interactableData;
 
-        public IItemData ItemData => (Item != null) ? Item.ItemData : _itemData;
-        public IItem Item { get; set; }
+        public override IInteractableObjectData InteractableData => _interactableData;
 
         protected override void Awake()
         {
             base.Awake();
-            if (ItemData == null) { throw new Exception($"Item \"{gameObject.name}\" uninitialized"); }
-            if (Item == null)
-            {
-                Item = _itemData.CreateItemInstance();
-            }
         }
     }
 }

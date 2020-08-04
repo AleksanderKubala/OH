@@ -15,6 +15,8 @@ namespace Assets.Managers
         private GameObject _worldSpaceCanvas;
         [SerializeField]
         private UIContextMenu _contextMenu;
+        [SerializeField]
+        private UITooltip _tooltip;
 
         private void Awake()
         {
@@ -25,6 +27,11 @@ namespace Assets.Managers
         public UIContextMenu GetContextMenu()
         {
             return _contextMenu;
+        }
+
+        public UITooltip GetTooltip()
+        {
+            return _tooltip;
         }
     }
 }

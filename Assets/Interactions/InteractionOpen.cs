@@ -12,7 +12,6 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _targetState;
 
-        public override Transform InteractionSource => _openable.transform;
         protected override InteractableObject AssociatedInteractable => _openable;
 
         public override void Perform(EntityController interactingEntity)
@@ -28,6 +27,11 @@ namespace Assets.Interactions
                 _openable.SetOpen();
                 _openable.AddState(_targetState);
             }
+        }
+
+        public override Transform GetInteractionSource()
+        {
+            return _openable.transform;
         }
     }
 }

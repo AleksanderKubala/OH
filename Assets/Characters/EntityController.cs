@@ -26,7 +26,7 @@ namespace Asset.OnlyHuman.Characters
         public IGameEntityStatistics Statistics {get; private set; }
         public IGameEntityBody Body { get; private set; }
         public IInventory Inventory { get; private set; }
-        public IInteraction PerformedInteraction
+        public IInteraction CurrentInteraction
         {
             get
             {
@@ -36,11 +36,11 @@ namespace Asset.OnlyHuman.Characters
             {
                 if(value != null)
                 {
-                    _interactionTrigger.enabled = true;
+
                 }
                 else
                 {
-                    _interactionTrigger.enabled = false;
+
                 }
                 _performedInteraction = value;
             }
@@ -50,8 +50,8 @@ namespace Asset.OnlyHuman.Characters
         {
             _interactionQueue = new LinkedList<IInteraction>();
             var inventory = new Inventory(this);
-            inventory.Expand(this);
             Inventory = inventory;
+            inventory.Expand(GetInventorySpaces());
         }
 
         private void Start()
@@ -60,26 +60,36 @@ namespace Asset.OnlyHuman.Characters
 
         private void Update()
         {
-            if(PerformedInteraction == null && _interactionQueue.Any())
+            if(CurrentInteraction == null && _interactionQueue.Any())
             {
-                PerformedInteraction = _interactionQueue.First.Value;
-                _interactionQueue.Remove(PerformedInteraction);
-                SetDestinationFlag(PerformedInteraction.InteractionSource);
+                CurrentInteraction = _interactionQueue.First.Value;
+                _interactionQueue.Remove(CurrentInteraction);
+
+                Transform destination = CurrentInteraction.GetInteractionSource();
+                if(destination != null)
+                {
+                    _interactionTrigger.enabled = true;
+                    SetDestinationFlag(destination);
+                }
+                else
+                {
+                    PerformCurrentInteraction();
+                }
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if(ReferenceEquals(other.transform, PerformedInteraction?.InteractionSource))
+            if(CurrentInteraction != null && ReferenceEquals(other.transform, CurrentInteraction.GetInteractionSource()))
             {
-                PerformedInteraction.Perform(this);
-                PerformedInteraction = null;
+                PerformCurrentInteraction();
+                _interactionTrigger.enabled = false;
             }
         }
 
         public void Walk(Vector3 pointWorldPosition)
         {
-            PerformedInteraction = null;
+            CurrentInteraction = null;
             SetDestinationFlag(pointWorldPosition);
         }
 
@@ -144,9 +154,18 @@ namespace Asset.OnlyHuman.Characters
             throw new NotImplementedException();
         }
 
-        public IInventorySpace GetInventorySpace()
+        public IEnumerable<IInventorySpace> GetInventorySpaces()
         {
-            return new InventorySpace(float.MaxValue);
+            return new List<IInventorySpace> {
+                new InventorySpace(gameObject.name + "'s personal space" , float.MaxValue),
+                new InventorySpace("Zig", float.MaxValue)
+                };
+        }
+
+        private void PerformCurrentInteraction()
+        {
+            CurrentInteraction.Perform(this);
+            CurrentInteraction = null;
         }
     }
 }

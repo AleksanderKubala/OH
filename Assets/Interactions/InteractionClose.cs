@@ -17,9 +17,7 @@ namespace Assets.Interactions
         [SerializeField]
         private InteractableState _targetState;
 
-        public override Transform InteractionSource => _openable.transform;
         protected override InteractableObject AssociatedInteractable => _openable;
-
 
         protected override void Start()
         {
@@ -37,6 +35,11 @@ namespace Assets.Interactions
                 _openable.SetClosed();
                 _openable.AddState(_targetState);
             }
+        }
+
+        public override Transform GetInteractionSource()
+        {
+            return _openable.transform;
         }
     }
 }

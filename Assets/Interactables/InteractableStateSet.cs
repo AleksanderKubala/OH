@@ -18,8 +18,6 @@ namespace Assets.Interactables
         private bool _shouldNotBeSubset;
         private HashSet<InteractableState> stateSet;
 
-        public IEnumerable<InteractableState> IncludedStates => statesGroup;
-
         private void OnEnable()
         {
             if(stateSet == null)
@@ -30,19 +28,6 @@ namespace Assets.Interactables
             {
                 stateSet.Add(state);
             }
-        }
-
-        public bool ContainsState(InteractableState state)
-        {
-            for (int i = 0; i < statesGroup.Length; i++)
-            {
-                if (statesGroup[i] == state)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         //similar to value requirement class implementation
