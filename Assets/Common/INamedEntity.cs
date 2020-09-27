@@ -2,7 +2,7 @@
 
 namespace Assets.Common
 {
-    public interface INamedObject
+    public interface INamedEntity
     {
         string Name { get; }
     }

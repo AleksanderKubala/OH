@@ -36,12 +36,13 @@ namespace Assets.UI
         private void Awake()
         {
             Toggle = GetComponent<Toggle>();
+            InventorySpaceToDisplay = _inventorySpace;
             _wasToggled = Toggle.isOn;
         }
 
         private void Start()
         {
-            InventorySpaceToDisplay = _inventorySpace;
+
         }
 
         public void OnInventorySpaceTabSelected(bool isToggled)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Interactables
@@ -12,5 +13,6 @@ namespace Assets.Interactables
         private InteractableState[] _exclusiveStates;
 
         public HashSet<InteractableState> ExclusiveStates => new HashSet<InteractableState>(_exclusiveStates);
+
     }
 }

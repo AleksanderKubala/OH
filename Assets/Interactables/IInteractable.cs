@@ -4,9 +4,9 @@ using Assets.Interactions;
 
 namespace Assets.Interactables
 {
-    public interface IInteractable : INamedObject, IDescribable
+    public interface IInteractable : INamedEntity, IDescribable
     {
-        IInteractableObjectData InteractableData { get; } 
+        InteractableObjectData InteractableData { get; } 
         InteractionSet Interactions { get; }
     }
 }

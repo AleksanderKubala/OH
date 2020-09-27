@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Common;
+﻿using Assets.Common;
+using Assets.GameEntity;
 
 namespace Assets.Body
 {
-    public class BodypartType : GameObjectType, INamedObject, IType<BodypartType>
+    public class BodypartType : GameEntityType, IType<BodypartType>
     {
         //public BodypartType(string name, string description, HashSet<BodypartType> bodypartSupertypes)
         //{
@@ -30,30 +29,30 @@ namespace Assets.Body
             return base.BelongsToType(type);
         }
 
-        public bool Equals(BodypartType other)
-        {
-            if(other != null)
-            {
-                if (ReferenceEquals(this, other) || (Name == other.Name))
-                {
-                    return true;
-                }
-            }
+        //public bool Equals(BodypartType other)
+        //{
+        //    if(other != null)
+        //    {
+        //        if (ReferenceEquals(this, other) || (Name == other.Name))
+        //        {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        public override bool Equals(object obj)
-        {
-            var casted = obj as BodypartType;
+        //public override bool Equals(object obj)
+        //{
+        //    var casted = obj as BodypartType;
 
-            return Equals(casted);
-        }
+        //    return Equals(casted);
+        //}
 
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return Name.GetHashCode();
+        //}
 
         //#region Static
 

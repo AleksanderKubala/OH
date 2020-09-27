@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
+using System.Linq;
 using Asset.OnlyHuman.Characters;
 using Assets.Common;
+using Assets.GameEntity;
 using Assets.Interactables;
 using Assets.Managers;
 using Assets.UI;
@@ -12,25 +13,23 @@ namespace Assets.Interactions
 {
     //TODO: with current interaction design it will be cumbersome to implement AI logic in the future. Need to think of better solution
     [Serializable]
-    public abstract class Interaction : MonoBehaviour, IInteraction, INamedObject, IContextActionSubscriber, IEquatable<Interaction>
+    public abstract class Interaction : MonoBehaviour, IInteraction, INamedEntity, IContextActionSubscriber, IEquatable<Interaction>
     {
-        [SerializeField]
-        protected InteractableStateSet enablingStateSet;
-        [SerializeField]
-        protected InteractableStateSet failingStateSet;
         [SerializeField]
         private string _interactionName;
         [SerializeField]
         private int _contextMenuPriority;
         [SerializeField]
         private Identifier Id;
+        [SerializeField]
+        private List<GameEntityIdentifier> _expects;
 
         public int ContextMenuPriority => _contextMenuPriority;
         public string ContextActionTitle => _interactionName;
         public bool ShowInContextMenu => IsEffective;
         public string Name => _interactionName;
         public bool IsEffective { get; protected set; }
-        protected abstract InteractableObject AssociatedInteractable { get; }
+        protected abstract Interactable AssociatedInteractable { get; }
 
         private void Awake()
         {
@@ -66,14 +65,52 @@ namespace Assets.Interactions
 
         void IContextActionSubscriber.OnSelectedInContextMenu()
         {
-            GameManager.Player.AddInteractionToPerform(this);
+            var interactionAttempt = GetInteractionAttempt();
+            interactionAttempt.InteractingEntity = GameManager.Player;
+            GameManager.Player.AddActionToPerform(interactionAttempt);
         }
-        protected virtual void OnInteractableStateChanged(HashSet<InteractableState> interactableNewState)
+
+        public IInteractionAttempt GetInteractionAttempt()
         {
-            IsEffective = enablingStateSet.IsFulfilled(AssociatedInteractable.CurrentState);
+            IInteractionAttempt attempt;
+
+            if(_expects.Any())
+            {
+                attempt = new InteractionAttempt(this, _expects.Select(x => new InteractionAttemptArgument(x.GameEntityType)).ToList());
+            }
+            else
+            {
+                attempt = new InteractionAttempt(this);
+            }
+
+            return attempt;
+        }
+
+        protected bool AreArgumentsCorrect(List<InteractionAttemptArgument> arguments)
+        {
+            bool argumentsCorrect = true;
+            var expectedArguments = _expects.GetEnumerator();
+
+            while(argumentsCorrect && expectedArguments.MoveNext())
+            {
+                bool matched = false;
+                var providedArguments = arguments.GetEnumerator();
+
+                while(!matched && providedArguments.MoveNext())
+                {
+                    if(expectedArguments.Current.Equals(providedArguments.Current))
+                    {
+                        matched = true;
+                    }
+                }
+                argumentsCorrect &= matched;
+            }
+
+            return argumentsCorrect;
         }
 
         public abstract Transform GetInteractionSource();
-        public abstract void Perform(EntityController interactingEntity);
+        public abstract void Attempt(EntityController interactingEntity, List<InteractionAttemptArgument> arguments);
+        protected abstract void OnInteractableStateChanged();
     }
 }

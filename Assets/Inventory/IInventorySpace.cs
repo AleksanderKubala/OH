@@ -7,7 +7,7 @@ using Assets.Items;
 
 namespace Assets.Inventory
 {
-    public interface IInventorySpace : INamedObject, IEnumerable<IInteractable>
+    public interface IInventorySpace : INamedEntity, IEnumerable<IInteractable>
     {
         event EventHandler<ItemAddedRemovedEventArgs> ItemTakenOut;
         event EventHandler<ItemAddedRemovedEventArgs> ItemPutInside;

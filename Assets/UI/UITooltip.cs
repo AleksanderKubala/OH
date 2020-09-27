@@ -18,7 +18,7 @@ namespace Assets.UI
         {
             if(_followMouse)
             {
-                transform.position = Input.mousePosition;
+                UpdatePosition();
             }
         }
 
@@ -26,8 +26,12 @@ namespace Assets.UI
         {
             Text = text;
             _followMouse = followMouse;
+            UpdatePosition();
             gameObject.SetActive(true);
-            StopCoroutine(_fadeTimer);
+            if(_fadeTimer != null)
+            {
+                StopCoroutine(_fadeTimer);
+            }
         }
 
         public void Hide()
@@ -39,6 +43,11 @@ namespace Assets.UI
         {
             yield return new WaitForSecondsRealtime(fadeAwaitTime);
             gameObject.SetActive(false);
+        }
+
+        private void UpdatePosition()
+        {
+            transform.position = Input.mousePosition + Vector3.down * 40;
         }
     }
 }

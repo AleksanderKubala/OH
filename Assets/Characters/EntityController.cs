@@ -3,12 +3,12 @@ using Assets.OH.Movement;
 using System.Collections.Generic;
 using Assets.Movement;
 using System;
-using Assets.Interactions;
 using System.Linq;
 using Assets.Inventory;
 using Assets.GameEntity;
 using Assets.Items;
 using Assets.Body;
+using Assets.Common;
 
 namespace Asset.OnlyHuman.Characters
 {
@@ -20,17 +20,17 @@ namespace Asset.OnlyHuman.Characters
         protected DestinationFlag _destinationFlag;
         [SerializeField]
         protected SphereCollider _interactionTrigger;
-        protected IInteraction _performedInteraction;
-        protected LinkedList<IInteraction> _interactionQueue;
+        protected IGameAction _performedAction;
+        protected LinkedList<IGameAction> _actionQueue;
 
         public IGameEntityStatistics Statistics {get; private set; }
         public IGameEntityBody Body { get; private set; }
         public IInventory Inventory { get; private set; }
-        public IInteraction CurrentInteraction
+        public IGameAction CurrentAction
         {
             get
             {
-                return _performedInteraction;
+                return _performedAction;
             }
             protected set
             {
@@ -42,13 +42,13 @@ namespace Asset.OnlyHuman.Characters
                 {
 
                 }
-                _performedInteraction = value;
+                _performedAction = value;
             }
         }
 
         private void Awake()
         {
-            _interactionQueue = new LinkedList<IInteraction>();
+            _actionQueue = new LinkedList<IGameAction>();
             var inventory = new Inventory(this);
             Inventory = inventory;
             inventory.Expand(GetInventorySpaces());
@@ -60,12 +60,12 @@ namespace Asset.OnlyHuman.Characters
 
         private void Update()
         {
-            if(CurrentInteraction == null && _interactionQueue.Any())
+            if(CurrentAction == null && _actionQueue.Any())
             {
-                CurrentInteraction = _interactionQueue.First.Value;
-                _interactionQueue.Remove(CurrentInteraction);
+                CurrentAction = _actionQueue.First.Value;
+                _actionQueue.Remove(CurrentAction);
 
-                Transform destination = CurrentInteraction.GetInteractionSource();
+                Transform destination = CurrentAction.GetTarget();
                 if(destination != null)
                 {
                     _interactionTrigger.enabled = true;
@@ -80,7 +80,7 @@ namespace Asset.OnlyHuman.Characters
 
         private void OnTriggerEnter(Collider other)
         {
-            if(CurrentInteraction != null && ReferenceEquals(other.transform, CurrentInteraction.GetInteractionSource()))
+            if(CurrentAction != null && ReferenceEquals(other.transform, CurrentAction.GetTarget()))
             {
                 PerformCurrentInteraction();
                 _interactionTrigger.enabled = false;
@@ -89,7 +89,7 @@ namespace Asset.OnlyHuman.Characters
 
         public void Walk(Vector3 pointWorldPosition)
         {
-            CurrentInteraction = null;
+            CurrentAction = null;
             SetDestinationFlag(pointWorldPosition);
         }
 
@@ -124,14 +124,14 @@ namespace Asset.OnlyHuman.Characters
             SetDestinationFlag(null, transform.position, EntityMovementController.StandardDistance);
         }
 
-        public void AddInteractionToPerform(IInteraction interactionToPerform)
+        public void AddActionToPerform(IGameAction interactionToPerform)
         {
-            _interactionQueue.AddLast(interactionToPerform);
+            _actionQueue.AddLast(interactionToPerform);
         }
 
-        public void CancelInteraction(IInteraction interaction)
+        public void CancelAction(IGameAction interaction)
         {
-            _interactionQueue.Remove(interaction);
+            _actionQueue.Remove(interaction);
         }
 
         public bool Equip(IItem item)
@@ -164,8 +164,8 @@ namespace Asset.OnlyHuman.Characters
 
         private void PerformCurrentInteraction()
         {
-            CurrentInteraction.Perform(this);
-            CurrentInteraction = null;
+            CurrentAction.Perform();
+            CurrentAction = null;
         }
     }
 }

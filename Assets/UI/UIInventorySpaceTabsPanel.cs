@@ -83,8 +83,8 @@ namespace Assets.UI
 
         protected override void ResetUIElement(UIInventorySpaceTab spaceTab, IInventorySpace inventorySpace)
         {
-            spaceTab.Toggle.isOn = false;
             spaceTab.InventorySpaceToDisplay = inventorySpace;
+            spaceTab.Toggle.isOn = false;
         }
 
         protected override UIInventorySpaceTab GetUIElementWithContent(IInventorySpace inventorySpace)

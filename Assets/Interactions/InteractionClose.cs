@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Asset.OnlyHuman.Characters;
 using Assets.Interactables;
 using UnityEngine;
@@ -13,33 +10,32 @@ namespace Assets.Interactions
     public class InteractionClose : Interaction
     {
         [SerializeField]
-        private InteractableOpenable _openable;
-        [SerializeField]
-        private InteractableState _targetState;
+        private Openable _openable;
 
-        protected override InteractableObject AssociatedInteractable => _openable;
+        protected override Interactable AssociatedInteractable => _openable.AssociatedInteractable;
 
         protected override void Start()
         {
             base.Start();
         }
 
-        public override void Perform(EntityController interactingEntity)
+        public override void Attempt(EntityController interactingEntity, List<InteractionAttemptArgument> arguments)
         {
-            if (failingStateSet.IsFulfilled(_openable.CurrentState))
-            {
-                //successful = false;
-            }
-            else
+            if (IsEffective)
             {
                 _openable.SetClosed();
-                _openable.AddState(_targetState);
+                AssociatedInteractable.AddState(InteractablesStates.Closed);
             }
         }
 
         public override Transform GetInteractionSource()
         {
             return _openable.transform;
+        }
+
+        protected override void OnInteractableStateChanged()
+        {
+            IsEffective = AssociatedInteractable.IsInState(InteractablesStates.Open) && !AssociatedInteractable.IsInState(InteractablesStates.Locked);
         }
     }
 }

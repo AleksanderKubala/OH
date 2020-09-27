@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Assets.Common
 {
     [CreateAssetMenu(fileName = "ID", menuName = "Identifier")]
-    public class Identifier : ScriptableObject { }
-
+    public class Identifier : ScriptableObject 
+    {
+    }
 }

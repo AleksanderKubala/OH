@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Assets.Interactables
 {
-    public class Door : InteractableOpenable
+    public class Doorwing : Openable
     {
         [SerializeField]
         private Rigidbody _rigidbody;
@@ -16,13 +16,6 @@ namespace Assets.Interactables
         private float _maxOpenDoorAngle;
         [SerializeField]
         private float _maxClosedDoorAngle;
-
-        public override IInteractableObjectData InteractableData => throw new System.NotImplementedException();
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
 
         public override void SetOpen()
         {

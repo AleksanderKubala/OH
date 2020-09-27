@@ -76,7 +76,9 @@ namespace Assets.UI
         {
             foreach(var interactable in _toggledInventoryItems)
             {
-                GameManager.Player.AddInteractionToPerform(interactable.Interactions.First(x => x.Equals(args.Interaction)));
+                var attempt = interactable.Interactions.First(x => x.Equals(args.Interaction)).GetInteractionAttempt();
+                attempt.InteractingEntity = GameManager.Player;
+                GameManager.Player.AddActionToPerform(attempt);
             }
 
         }

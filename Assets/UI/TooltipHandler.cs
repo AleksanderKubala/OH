@@ -15,12 +15,12 @@ namespace Assets.UI
         [SerializeField]
         private TooltipDisplayedEvent TooltipDisplayed;
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public void OnPointerEnter(PointerEventData args)
         {
             displayTimer = StartCoroutine(AwaitDisplay());
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public void OnPointerExit(PointerEventData args)
         {
             StopCoroutine(displayTimer);
             UIManager.Instance.GetTooltip().Hide();

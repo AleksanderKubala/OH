@@ -3,7 +3,7 @@ using Assets.Common;
 
 namespace Assets.GameEntity
 {
-    public class GameEntityAttributeType : INamedObject, IEquatable<GameEntityAttributeType>
+    public class GameEntityAttributeType : INamedEntity, IEquatable<GameEntityAttributeType>
     {
         public GameEntityAttributeType(string name)
         {

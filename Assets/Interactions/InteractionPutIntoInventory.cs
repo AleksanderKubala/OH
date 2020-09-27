@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Asset.OnlyHuman.Characters;
 using Assets.Interactables;
 using UnityEngine;
@@ -8,30 +9,36 @@ namespace Assets.Interactions
     public class InteractionPutIntoInventory : Interaction
     {
         [SerializeField]
-        private InteractablePickupable _pickupable;
-        [SerializeField]
-        private InteractableState _targetState;
+        private Interactable _interactable;
 
-        protected override InteractableObject AssociatedInteractable => _pickupable;
+        protected override Interactable AssociatedInteractable => _interactable;
 
-        public override void Perform(EntityController interactingEntity)
+        public override void Attempt(EntityController interactingEntity, List<InteractionAttemptArgument> arguments)
         {
-            var availableSpaces = interactingEntity.Inventory.Where(x => x.HasEnoughSpace(_pickupable));
-            if(availableSpaces.Any())
+            if (IsEffective)
             {
-                //TODO: recode properly to go thorugh available spaces and select the best fitting one
-                var isPlacedInInventory = availableSpaces.First().PutItemInside(_pickupable);
-                if(isPlacedInInventory)
+                var availableSpaces = interactingEntity.Inventory.Where(x => x.HasEnoughSpace(AssociatedInteractable));
+                if (availableSpaces.Any())
                 {
-                    _pickupable.AddState(_targetState);
-                    _pickupable.gameObject.SetActive(false);
+                    //TODO: recode properly to go thorugh available spaces and select the best fitting one
+                    var isPlacedInInventory = availableSpaces.First().PutItemInside(AssociatedInteractable);
+                    if (isPlacedInInventory)
+                    {
+                        AssociatedInteractable.AddState(InteractablesStates.InInventory);
+                        AssociatedInteractable.gameObject.SetActive(false);
+                    }
                 }
             }
         }
 
         public override Transform GetInteractionSource()
         {
-            return _pickupable.transform;
+            return AssociatedInteractable.transform;
+        }
+
+        protected override void OnInteractableStateChanged()
+        {
+            IsEffective = AssociatedInteractable.IsInState(InteractablesStates.InInventory);
         }
     }
 }

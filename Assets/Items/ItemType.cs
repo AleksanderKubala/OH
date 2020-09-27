@@ -1,20 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Transactions;
 using Assets.Common;
+using Assets.GameEntity;
 
 namespace Assets.Items
 {
-    public class ItemType : GameObjectType, INamedObject, IType<ItemType>
+    public class ItemType : GameEntityType, IType<ItemType>
     {
-        public ItemType(string name, string description, HashSet<ItemType> itemSupertypes)
-        {
-            if (itemSupertypes == null)
-            {
-                itemSupertypes = new HashSet<ItemType>();
-            }
 
-            //LinkToParents(this, itemSupertypes);
-        }
 
         public bool BelongsToType(ItemType type)
         {
@@ -28,30 +20,30 @@ namespace Assets.Items
         //    return belongsToGroup;
         //}
 
-        public bool Equals(ItemType other)
-        {
-            if (other != null)
-            {
-                if (ReferenceEquals(this, other) || (Name == other.Name))
-                {
-                    return true;
-                }
-            }
+        //public bool Equals(ItemType other)
+        //{
+        //    if (other != null)
+        //    {
+        //        if (ReferenceEquals(this, other) || (Name == other.Name))
+        //        {
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        public override bool Equals(object obj)
-        {
-            var casted = obj as ItemType;
+        //public override bool Equals(object obj)
+        //{
+        //    var casted = obj as ItemType;
 
-            return Equals(casted);
-        }
+        //    return Equals(casted);
+        //}
 
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return Name.GetHashCode();
+        //}
 
         //#region Static
 

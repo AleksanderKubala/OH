@@ -1,9 +1,10 @@
 ﻿using Assets.Common;
+using Assets.GameEntity;
 
 namespace Assets.Data
 {
-    public interface IInteractableObjectData : INamedObject, IDescribable
+    public interface IInteractableObjectData : INamedEntity, IDescribable
     {
-        GameObjectType ObjectType { get; }
+        GameEntityType GameEntityType { get; }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace Assets.Interactables.Events
 {
     [Serializable]
-    public class InteractableStateChangedEvent : UnityEvent<HashSet<InteractableState>>
+    public class InteractableStateChangedEvent : UnityEvent
     {
     }
 }
