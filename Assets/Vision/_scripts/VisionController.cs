@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Assets.OH.Body;
-using Assets.OH.Vision.Events;
+using Assets.Vision.Events;
+using Assets.OH;
 
-namespace Assets.OH.Vision
+namespace Assets.Vision
 {
     [RequireComponent(typeof(SphereCollider))]
     public class VisionController : MonoBehaviour

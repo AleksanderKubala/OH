@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using OHLogic.Data;
-using OHLogic.Body;
+﻿using Assets.Data;
+using UnityEngine;
 
-namespace Assets.OH.Body.Data
+namespace Assets.Body.Data
 {
     public abstract class BodypartData : ScriptableObject, IBodypartData
     {

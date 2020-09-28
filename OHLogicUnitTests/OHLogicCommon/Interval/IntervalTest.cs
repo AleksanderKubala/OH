@@ -1,7 +1,7 @@
 ﻿using System;
+using Assets.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework.Internal;
-using OHLogic.Common;
 
 namespace OHLogicUnitTests.OHLogicCommon.Interval
 {

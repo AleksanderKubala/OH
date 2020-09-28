@@ -8,11 +8,11 @@ namespace Assets.UI
 {
     public class ContextMenuHandler : MonoBehaviour, IPointerDownHandler
     {
-        private LinkedList<IContextActionSubscriber> _subscribers;
+        private List<IContextActionSubscriber> _subscribers;
 
         private void Awake()
         {
-            _subscribers = new LinkedList<IContextActionSubscriber>();
+            _subscribers = new List<IContextActionSubscriber>();
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -26,7 +26,7 @@ namespace Assets.UI
         public void Subscribe(IContextActionSubscriber subscriber)
         {
             //TODO: implement display priority
-            _subscribers.AddLast(subscriber);
+            _subscribers.Add(subscriber);
         }
 
         public void Unsubscribe(IContextActionSubscriber subscriber)
@@ -39,15 +39,15 @@ namespace Assets.UI
         {
             var contextMenu = UIManager.Instance.GetContextMenu();
 
-            foreach (var subscription in GetActiveSubscriptions())
+            foreach (var subscriber in GetActiveSubscribers())
             {
-                contextMenu.SetContextAction(subscription);
+                contextMenu.SetContextAction(subscriber);
             }
 
             contextMenu.Display(Input.mousePosition);
         }
 
-        protected IEnumerable<IContextActionSubscriber> GetActiveSubscriptions()
+        protected IEnumerable<IContextActionSubscriber> GetActiveSubscribers()
         {
             var activeSubscribers = _subscribers.Where(x => x.ShowInContextMenu);
 

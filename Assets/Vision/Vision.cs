@@ -1,8 +1,8 @@
-﻿using OHLogic.Data;
-using OHLogic.Vision;
+﻿using Assets.Data;
+using Assets.Vision;
 using UnityEngine;
 
-namespace Assets.OH.Vision
+namespace Assets.Vision
 {
     public class Vision : VisionField, IVision
     {

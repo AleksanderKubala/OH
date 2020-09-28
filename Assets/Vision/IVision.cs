@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.OH.Vision
+namespace Assets.Vision
 {
     public interface IVision
     {

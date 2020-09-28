@@ -1,12 +1,13 @@
-﻿using Asset.OnlyHuman.Characters;
+﻿using System.Collections.Generic;
+using Asset.OnlyHuman.Characters;
 using UnityEngine;
 
 namespace Assets.Interactions
 {
     public interface IInteraction
     {
-        Transform InteractionSource { get; }
-        //PerformInteractionCallback Perform { get; }
-        bool Perform(EntityController interactingEntity);
+        Transform GetInteractionSource();
+        IInteractionAttempt GetInteractionAttempt();
+        void Attempt(EntityController interactingEntity, List<InteractionAttemptArgument> arguments);
     }
 }

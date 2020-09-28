@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.UI
 {
     [CreateAssetMenu(fileName = "UiTextPool", menuName = "Object Pools/UI Text Pool ")]
-    public class UITextPool : UnityObjectPool<UIText>
+    public class UITextPool : UnityObjectPool<UITextField>
     {
         public static UITextPool Instance { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Assets.UI
             Instance = this;
         }
 
-        protected override void Reset(UIText usedObject)
+        protected override void Reset(UITextField usedObject)
         {
             usedObject.gameObject.SetActive(false);
             usedObject.Text = "";

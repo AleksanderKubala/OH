@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
+using Assets.Body.Data;
 using UnityEngine;
-using Assets.OH.Body.Data;
-using OHLogic.Body;
 
-namespace Assets.OH.Body
+namespace Assets.Body
 {
     [Serializable]
     public abstract class BodypartController : MonoBehaviour

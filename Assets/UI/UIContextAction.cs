@@ -1,9 +1,7 @@
-﻿using System;
-using Assets.Managers;
+﻿using Assets.Managers;
 using Assets.UI.Events;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.UI
@@ -32,10 +30,10 @@ namespace Assets.UI
                 {
                     if(_subscription != null)
                     {
-                        ContextActionSelected.RemoveListener(_subscription.OnSelectedByContextMenu);
+                        ContextActionSelected.RemoveListener(_subscription.OnSelectedInContextMenu);
                     }
                     _text.text = value.ContextActionTitle;
-                    ContextActionSelected.AddListener(value.OnSelectedByContextMenu);
+                    ContextActionSelected.AddListener(value.OnSelectedInContextMenu);
                     _subscription = value;
                 }
             }
